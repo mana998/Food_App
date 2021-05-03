@@ -12,8 +12,11 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.static(__dirname + '/public'));
 
 const recipesRouter = require("./routes/recipes.js");
-
 app.use(recipesRouter.router);
+
+
+const recipeRouter = require("./routes/recipe.js");
+app.use(recipeRouter.router);
 
 
 const fs = require('fs');
@@ -24,10 +27,16 @@ app.get("/recipes", (req, res) => {
     res.send(recipes);
 });
 
+const recipe = fs.readFileSync(__dirname + '/public/recipe/recipe.html', 'utf8');
+
+app.get("/recipe/:recipe_name", (req, res) => {
+
+    res.send(recipe);
+});
 
 //database example queries!! for USER table it will be run every time you run app.js
 
-/*
+/* 
 
 //create check if user already exists
 db.query(`INSERT INTO user (username, password, active) VALUES (?, ?, ?);`, ["Perdro", "Password",1], (error, result, fields) => {
