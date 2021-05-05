@@ -1,3 +1,12 @@
+//setup socket
+const socket = io();
+
+//temporary placeholder user
+let user = {
+    id: 1
+};
+
+
 let toggle = true;
 
 //show or hide chat window
@@ -33,10 +42,10 @@ function toggleChat(id) {
     //console.log("togglechat1",toggleChat);
     //console.log("className",className);
     if (toggleChat){
-        console.log("hide");
+        //console.log("hide");
         $(className).hide();
     } else {
-        console.log("show");
+        //console.log("show");
         $(className).show();
     }
 }
@@ -65,19 +74,46 @@ function generateUserChat(user) {
                 <div class="user-messages ${user.id}">
                     <p class="user-name">${user.name}</p>
                 </div>
-                <input type="text">
-                <button onClick="sendMessage()">SEND</button>
+                <input id="message${user.id}" type="text">
+                <button onClick="sendMessage(${user.id})">SEND</button>
             </div>
     </div>`);
 }
 
-function sendMessage() {
-    console.log("message sent")
+function sendMessage(id) {
+    let message = document.getElementById(`message${id}`).value;
+    //empty the box
+    document.getElementById(`message${id}`).value = '';
+    //console.log("sent msg");
+    //console.log(message);
+    //add your message to chat
+    renderMessage(id, true, message)
+    //send message
+    socket.emit("client send message", { to: id, from: user.id , message : message})
 };
+//receive message - store id from login
+socket.on(`server send message ${user.id}`, (data) => {
+    console.log("received msg", data);
+    //add message to chat
+    renderMessage(data.from, false, data.message);
+})
+
+function generateMessage(position, message) {
+    return `<p class="user-message ${position}">${message}</p>`;
+}
+
+//generate message either by sender or recipient
+function renderMessage(id, isSender, message) {
+    let position = isSender ? "right" : "left";
+    //console.log("position", position);
+    $(`.user-messages.${id}`).append(generateMessage(position, message));
+}
+
 
 function openChat(user) {
     if (!openChats.find(element => element.id === user.id)) {
         openChats.push({id: user.id, name: user.name, toggle: false});
+        //console.log(user.id);
         $("body").append(generateUserChat(user));
     }
 }
@@ -100,7 +136,7 @@ function closeChat(id) {
     //find index of element to remove
     let userId = openChats.findIndex(
         element => {
-            console.log("element",element);
+            //console.log("element",element);
             return Number(element.id) === Number(id)}
     );
     //remove

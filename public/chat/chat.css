@@ -10,14 +10,6 @@
     box-shadow: -0.1em 0.5em 0.5em #f8f8f8;
 }
 
-/*.open-chats-container{
-    display: block;
-    position: fixed;
-    width: fit-content;
-    right: 15em;
-    bottom: 0%;
-}
-*/
 .user-chat-item {
     float: right;
     width: 15em;
@@ -63,4 +55,21 @@
 .control-bar {
     padding: 0.25 1em;
     background-color: #f8f8f8;
+}
+
+.user-message {
+    width: 75%;
+    display: inline-block;
+    border-radius: 0.5em;
+}
+
+.left {
+    float: left;
+    background-color: #f8f8f8;
+}
+
+.right {
+    float: right;
+    /*placeholder color*/
+    background-color: aquamarine;
 }

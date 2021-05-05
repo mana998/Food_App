@@ -18,6 +18,7 @@
   "homepage": "https://github.com/mana998/Food_App#readme",
   "description": "",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
   }
 }
