@@ -84,7 +84,7 @@ db.query("DELETE FROM user WHERE username = 'Dan'", (error, result, fields) => {
 
 */
 
-const server = app.listen(process.env.PORT || 8080, (error) => {
+
 
 server.listen(process.env.PORT || 8080, (error) => {
 
