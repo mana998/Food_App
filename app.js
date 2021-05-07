@@ -30,11 +30,12 @@ app.use(recipeRouter.router);
 
 const fs = require('fs');
 
+const header = fs.readFileSync(__dirname + '/public/header/header.html', 'utf8');
 const recipes = fs.readFileSync(__dirname + '/public/recipes/recipes.html', 'utf8');
 const chat = fs.readFileSync(__dirname + '/public/chat/chat.html', 'utf8');
 
 app.get("/recipes", (req, res) => {
-    res.send(recipes + chat);
+    res.send(header + recipes + chat);
 });
 
 //chat management
@@ -51,7 +52,7 @@ const recipe = fs.readFileSync(__dirname + '/public/recipe/recipe.html', 'utf8')
 
 app.get("/recipe/:recipe_name", (req, res) => {
 
-    res.send(recipe);
+    res.send(header + recipe);
 });
 
 //database example queries!! for USER table it will be run every time you run app.js
