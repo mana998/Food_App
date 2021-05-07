@@ -12,7 +12,7 @@ async function renderRecipe() {
     $(".flex-container").append(`
     <div id ="recipe-container" class="row">
         <div class="col-12 col-lg-8">
-            <img class="recipe-img" src="./../recipes/img/chocolate cake.png" alt="${result.recipe.name} image"}>
+            <img class="recipe-img" src="${result.recipe.recipe_img}" alt="${result.recipe.name} image"}>
         </div>
         <div id ="ingredients" class=" col-12 col-lg-4 "></div>
     </div>`);

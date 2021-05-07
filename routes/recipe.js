@@ -2,11 +2,11 @@ const router = require("express").Router();
 const db = require("./../database/connection").connection; 
 
 class Recipe {
-    constructor (name, description, user_id) {
+    constructor (name, description, user_id, recipe_img) {
         this.name = name;
         this.description = description;
         this.user_id = user_id;
-        //there should be url in db form img 
+        this.recipe_img = recipe_img;
     }
 }
 class Ingredient{
@@ -30,14 +30,14 @@ router.get("/api/recipe/:recipe_name", (req, res) => {
 
         //this part should be outside
         if (result.length != 0){
-            console.log(result)
+            
             //write recipe to object
             const ingredients = [];
             for (const ingredient in result){
 
                 ingredients.push(new Ingredient(result[ingredient].ingredient_name, result[ingredient].measurement_name, result[ingredient].amount));
             }
-            const recipe = new Recipe(result[0].recipe_name, result[0].recipe_desc, result[0].user_id );
+            const recipe = new Recipe(result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img );
             res.send({
                         recipe: recipe,
                         ingredients: ingredients

@@ -48,10 +48,11 @@ io.on('connection', (socket) => {
 });
 
 const recipe = fs.readFileSync(__dirname + '/public/recipe/recipe.html', 'utf8');
+const footer = fs.readFileSync(__dirname + '/public/footer/footer.html', 'utf8');
 
 app.get("/recipe/:recipe_name", (req, res) => {
 
-    res.send(recipe);
+    res.send(recipe + chat + footer);
 });
 
 //database example queries!! for USER table it will be run every time you run app.js
