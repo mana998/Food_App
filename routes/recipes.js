@@ -1,33 +1,33 @@
 const router = require("express").Router();
+const db = require("./../database/connection").connection; 
 
-class Recipe {
-    constructor (name) {
-        this.name = name;
-    }
-}
-
-//depending on parameters, modified array will be returned, but original one must remain unchanged
-const recipes = [
-    new Recipe (
-        "Chocolate Cake", 
-    ),
-    new Recipe (
-        "Butter-poached squid noodle", 
-    ),
-    new Recipe (
-        "Pork Meat Pie", 
-    ),
-    new Recipe (
-        "Egg Noodles", 
-    ),
-    new Recipe (
-        "White Chocolate Cake", 
-    ),
-];
+const Recipe = require("./../models/Recipe").Recipe;
 
 router.get("/api/recipes", (req, res) => {
-    res.send({recipes});
+
+    let page = req.query.page;
+    let size = req.query.size;
+    //add filtering
+    let filter = req.query.filter;
+
+    let query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;'
+
+    db.query(query, [Number(size), Number((page - 1) * size)], (error, result, fields) => {
+        //this part should be outside
+        if (result && result.length) {
+            //write recipe to object
+            const recipes = [];
+            for (const recipe of result) {
+                recipes.push(new Recipe('', recipe.recipe_name,'', '', recipe.recipe_img));
+            }
+            res.send({recipes});
+        } else {
+            res.send({message: "No recipes found"});
+        }
+    });
 })
+
+
 
 module.exports = {
     router: router
