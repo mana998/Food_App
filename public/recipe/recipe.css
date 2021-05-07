@@ -1,0 +1,44 @@
+.recipe-img{
+    max-height: 100%;
+    max-width: 100%;
+
+}
+
+.image-container{
+    height: 40vh;
+    
+    
+}
+
+.recipe-page{
+    padding: 5% 10% 0% 10%;
+  
+}
+
+#recipe-container{
+    padding-top: 5%;
+}
+
+.description-headder{
+    padding-bottom: 2%;
+    padding-top: 5%;
+    border-bottom: 1px solid black;
+}
+
+.ingredients-headder{
+    padding-bottom: 2%;
+    
+}
+
+.page-title{
+    border-bottom: 1px solid black;
+    padding-bottom: 2%;
+}
+
+
+@media only screen and (max-width: 992px) {
+    .ingredients-headder{
+        padding-top: 5%;
+    }
+  }
+
