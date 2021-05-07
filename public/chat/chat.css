@@ -1,0 +1,75 @@
+.chat-container {
+    display: block;
+    position: fixed;
+    width: 15em;
+    right: 0%;
+    bottom: 0%;
+    cursor: pointer;
+    background-color: #ffffff;
+    border: 1px solid #f8f8f8;
+    box-shadow: -0.1em 0.5em 0.5em #f8f8f8;
+}
+
+.user-chat-item {
+    float: right;
+    width: 15em;
+    border: 1px solid #f8f8f8;
+    background-color: white;
+    bottom: 0;
+    position: absolute;
+}
+
+.control-bar-user {
+    padding: 0.25 1em;
+    background-color: #f8f8f8;
+}
+
+.specific-user-chat{
+    /*padding: 0.2em;*/
+    /*height: 15em;*/
+}
+
+.user-messages {
+    height: 15em;
+}
+
+.user-item {
+    display: block;
+    background-color: none;
+    transition-duration: 0.3s;
+    border-top: #f8f8f8 1px solid;
+}
+
+.user-item:hover {
+    transition-duration: 0.3s;
+    background-color: #f8f8f8;
+}
+
+.user-name, .control-bar {
+    text-align: left;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    padding: 1em;
+}
+
+.control-bar {
+    padding: 0.25 1em;
+    background-color: #f8f8f8;
+}
+
+.user-message {
+    width: 75%;
+    display: inline-block;
+    border-radius: 0.5em;
+}
+
+.left {
+    float: left;
+    background-color: #f8f8f8;
+}
+
+.right {
+    float: right;
+    /*placeholder color*/
+    background-color: aquamarine;
+}
