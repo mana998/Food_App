@@ -6,20 +6,21 @@ async function renderHomepageRecipes() {
 
     result.recipes.map((recipe,index) => {
         
-        let current = 0;
+        let currentForBig = 0;
+        //big size carousel
         if (index % 3 == 0){
             $(".carousel-inner").append(`
     
-            <div  class="carousel-item  col-12 item-container">
+            <div id = "item${index}"  class="carousel-item  col-12 big-item-container">
                 <div id = "block${index}" class="row item-container-row">
                 </div>
                 
             </div>  
             `);
-            current = index;
+            currentForBig = index;
         }
 
-        $(`#block${current}`).append(`
+        $(`#block${currentForBig}`).append(`
         <div class="col-3 recipe-carusel-item">
                 <div class="img-size">
                     <a href="./recipe/${recipe.name}" ><img class="home-image active image-style" src="${recipe.recipe_img}" alt=""></a>
@@ -29,10 +30,31 @@ async function renderHomepageRecipes() {
                 </div>
         </div>
         `)
+        $("#item0").addClass("active");
 
-        if (index == 0){
-            $(".carousel-item").addClass("active");
-        }
+        //medium size carousel
+        
+      
+            $(".carousel-inner-medium").append(`
+    
+            <div id = "medium-item${index}" class="carousel-item col-11 medium-carousel-style">
+               
+                    <div class=" recipe-carusel-item">
+                        <div class="img-size">
+                            <a href="./recipe/${recipe.name}" ><img class="home-image active image-style" src="${recipe.recipe_img}" alt=""></a>
+                        </div>
+                        <div class="image-name">
+                            <p>${recipe.name}</p>
+                        </div>
+                    </div>
+               
+                
+            </div>  
+            `);
+        
+      
+        $("#medium-item0").addClass("active");
+        
     })
     
     
