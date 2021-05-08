@@ -40,6 +40,9 @@ app.use(sessionRouter.router);
 const recipeRouter = require("./routes/recipe.js");
 app.use(recipeRouter.router);
 
+const homeRecipesRouter = require("./routes/homeRecipes.js");
+app.use(homeRecipesRouter.router);
+
 
 const fs = require('fs');
 
@@ -68,6 +71,13 @@ app.get("/recipe/:recipe_name", (req, res) => {
 
 
     res.send(header + recipe + chat + footer);
+
+});
+
+const homepage = fs.readFileSync(__dirname + '/public/homepage/homepage.html', 'utf8');
+app.get("/", (req, res) => {
+
+    res.send(homepage);
 
 });
 

@@ -1,0 +1,71 @@
+
+#homepage-headder{
+    margin-left: 7%;
+    font-weight: bold;
+    color: #BA9291;
+}
+
+#recipe-carousel{
+    background-color: #BA9291;
+}
+
+.home-image{
+    max-height: 100%;
+    max-width: 100%;
+    position:relative;
+    z-index: 2;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    object-fit: cover;
+
+}
+
+
+.image-style{
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.home-page{
+    padding-top: 5% ;
+
+  
+}
+.img-size{
+    height: 75%;
+
+    text-align: center;
+
+}
+
+.image-name{
+    text-align: center;
+    color: black;
+    margin-top: 20%;
+
+}
+
+.item-container-row {
+    text-align: center;
+    
+}
+
+.item-container{
+    margin-left: 4%;
+}
+
+.recipe-carusel-item{
+    background-color: white;
+    height: 60vh;
+    margin: 3%;
+    padding: 3%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.carousel-control-prev{
+    justify-content: start !important;
+    padding-left: 2%;
+}
+.carousel-control-next{
+    justify-content: end !important;
+    padding-right: 2%;
+}
