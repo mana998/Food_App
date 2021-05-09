@@ -1,7 +1,16 @@
 const express = require("express");
 const app = express();
+const session = require("express-session");
+//const bcrypt = require("bcrypt");
 
-//get the connection to db so yuo can run queries, connection fefined in folder database file connection.js
+app.use(session({
+    secret: 'keyboard cat', //will see later
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}))
+
+//get the connection to db so yuo can run queries, connection defined in folder database file connection.js
 const db = require("./database/connection").connection; 
 
 
@@ -16,12 +25,16 @@ const io = require('socket.io')(server);
 app.use(express.static(__dirname + '/public'));
 
 const recipesRouter = require("./routes/recipes.js");
-
 const chatRouter = require("./routes/chat.js");
+const loginRouter = require("./routes/login.js");
+const sessionRouter = require("./routes/session.js");
 
 
 app.use(recipesRouter.router);
 app.use(chatRouter.router);
+app.use(loginRouter.router);
+app.use(sessionRouter.router);
+
 
 
 const recipeRouter = require("./routes/recipe.js");
