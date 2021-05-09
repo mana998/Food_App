@@ -1,4 +1,4 @@
-async function renderHomepageRecipes() {
+(async function renderHomepageRecipes() {
 
     let fetchRecipe = `/api/homeRecipes`;
     const response = await fetch(fetchRecipe);
@@ -57,7 +57,5 @@ async function renderHomepageRecipes() {
         
     })
     
-    
 
-
-}
+})();
