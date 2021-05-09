@@ -66,6 +66,12 @@ io.on('connection', (socket) => {
         //will receive depending on passed id
         socket.broadcast.emit(`server send message ${data.to}`, {to: data.to, from: data.from, message: data.message});
     })
+
+    socket.on("online users change", (data) => {
+        //send to all
+        console.log("update");
+        io.emit(`user list update`);
+    })
 });
 
 

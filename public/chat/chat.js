@@ -1,13 +1,9 @@
 //setup socket
 const socket = io();
 
-//temporary placeholder user
-let user = {
-    id: 1
-};
-
-
 let toggle = true;
+
+let myId;
 
 //show or hide chat window
 function toggleChat(id) {
@@ -89,13 +85,17 @@ function sendMessage(id) {
     //add your message to chat
     renderMessage(id, true, message)
     //send message
-    socket.emit("client send message", { to: id, from: user.id , message : message})
+    socket.emit("client send message", { to: id, from: myId , message : message})
 };
 //receive message - store id from login
-socket.on(`server send message ${user.id}`, (data) => {
+socket.on(`server send message ${myId}`, (data) => {
     console.log("received msg", data);
     //add message to chat
     renderMessage(data.from, false, data.message);
+})
+
+socket.on(`user list upadte`, () => {
+    renderChat();
 })
 
 function generateMessage(position, message) {
@@ -119,7 +119,9 @@ function openChat(user) {
 }
 
 async function renderChat() {
-    let fetchString = `/api/chat`;
+    myId = await getSession();
+    //get only username and id except user with specified id
+    let fetchString = `/api/chat?id=${myId}`;
     const response = await fetch(fetchString);
     const result = await response.json();
     if (result.users.length) {
@@ -128,6 +130,18 @@ async function renderChat() {
         });
     } else {
         $(append).append("<h2>No users found</h2>");
+    }
+};
+
+async function getSession() {
+    let fetchString = `/getsession`;
+    const response = await fetch(fetchString);
+    const result = await response.json();
+    if (result.id) {
+        console.log("id", result.id);
+        return result.id;
+    } else {
+        console.log("Something went wrong");
     }
 };
 
@@ -151,4 +165,7 @@ function closeChat(id) {
     }
 }
 
-renderChat();
+if (myId) {
+    renderChat();
+}
+

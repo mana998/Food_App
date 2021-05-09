@@ -1,38 +1,26 @@
 const router = require("express").Router();
+const db = require("./../database/connection").connection; 
 
-class User {
-    constructor (id, name) {
-        this.id = id;
-        this.name = name;
-    }
-}
-
-//depending on parameters, modified array will be returned, but original one must remain unchanged
-const users = [
-    new User (
-        1,
-        "Chocolate Cake", 
-    ),
-    new User (
-        2,
-        "Butter-poached squid noodle", 
-    ),
-    new User (
-        3,
-        "Pork Meat Pie", 
-    ),
-    new User (
-        4,
-        "Egg Noodles", 
-    ),
-    new User (
-        5,
-        "White Chocolate Cake", 
-    ),
-];
+const User = require("./../models/User").User;
 
 router.get("/api/chat", (req, res) => {
-    res.send({users});
+    let id = req.query.id || -1;
+    let query = 'SELECT user_id, username FROM user WHERE user_id != ? && active = 1;'
+
+    db.query(query, [id], (error, result, fields) => {
+    
+        //this part should be outside
+        if (result && result.length) {
+            //write user to object
+            const users = [];
+            for (const user of result) {
+                users.push(new User(user.user_id, user.username));
+            }
+            res.send({users});
+        } else {
+            res.send({message: "No users found"});
+        }
+    });
 })
 
 module.exports = {

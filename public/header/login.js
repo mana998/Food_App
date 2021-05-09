@@ -18,6 +18,8 @@ async function login(){
     const result = await response.json();
     console.log("RESUUUUUUUULT", result);
     await setSession(result);
+    await renderChat();
+    await socket.emit("online users change")
 }
 
 async function setSession(loginResult) {
