@@ -1,7 +1,7 @@
 function generateRecipe(recipe){
     return(
     `<div class="flex-item">
-    <a class="recipe-link" href="/recipe/${recipe.name}">
+    <a class="recipe-link" href="/recipes/${recipe.name}">
         <h2 class="recipe-name">${recipe.name}</h2>
         <img class="recipe-img" src="./../global/images/${recipe.img}.jpg">
     </a>
