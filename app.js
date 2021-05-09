@@ -77,7 +77,7 @@ app.get("/recipe/:recipe_name", (req, res) => {
 const homepage = fs.readFileSync(__dirname + '/public/homepage/homepage.html', 'utf8');
 app.get("/", (req, res) => {
 
-    res.send(homepage);
+    res.send(header + homepage +footer +chat);
 
 });
 
