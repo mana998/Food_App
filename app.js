@@ -26,14 +26,14 @@ app.use(express.static(__dirname + '/public'));
 
 const recipesRouter = require("./routes/recipes.js");
 const chatRouter = require("./routes/chat.js");
-const loginRouter = require("./routes/login.js");
-const sessionRouter = require("./routes/session.js");
+////const loginRouter = require("./routes/login.js");
+//const sessionRouter = require("./routes/session.js");
 
 
 app.use(recipesRouter.router);
 app.use(chatRouter.router);
-app.use(loginRouter.router);
-app.use(sessionRouter.router);
+//app.use(loginRouter.router);
+//app.use(sessionRouter.router);
 
 
 
