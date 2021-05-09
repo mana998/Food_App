@@ -5,7 +5,7 @@ const Recipe = require("./../models/Recipe").Recipe;
 
 router.get("/api/recipes", (req, res) => {
 
-    let page = req.query.page;
+    let page = req.query.page || 1;
     let size = req.query.size;
     //add filtering
     let filter = req.query.filter;
@@ -13,6 +13,7 @@ router.get("/api/recipes", (req, res) => {
     let query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;'
 
     db.query(query, [Number(size), Number((page - 1) * size)], (error, result, fields) => {
+    
         //this part should be outside
         if (result && result.length) {
             //write recipe to object

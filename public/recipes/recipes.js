@@ -3,7 +3,7 @@ function generateRecipe(recipe){
     `<div class="flex-item">
     <a class="recipe-link" href="/recipe/${recipe.name}">
         <h2 class="recipe-name">${recipe.name}</h2>
-        <img class="recipe-img" src="/recipes/img/${recipe.img}.png">
+        <img class="recipe-img" src="./../global/images/${recipe.img}.jpg">
     </a>
 </div>`);
 }
