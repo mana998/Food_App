@@ -1,6 +1,16 @@
-#myFooter {
-    height: 10px;
-    display: flex;
-    justify-content: center;
+footer {
+ 
     color: black;
+
+  
+    
+    clear: both;
+    position: relative;
+    text-align: center;
+    height: 10px;
+    margin-top: -20px;
+    border-top: 1px solid black;
+    z-index: -1;
+
+
 }

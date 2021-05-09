@@ -45,9 +45,10 @@ const chat = fs.readFileSync(__dirname + '/public/chat/chat.html', 'utf8');
 const recipe = fs.readFileSync(__dirname + '/public/recipe/recipe.html', 'utf8');
 const footer = fs.readFileSync(__dirname + '/public/footer/footer.html', 'utf8');
 const homepage = fs.readFileSync(__dirname + '/public/homepage/homepage.html', 'utf8');
+const myAccount = fs.readFileSync(__dirname + '/public/myAccount/myAccount.html', 'utf8');
 
 app.get("/recipes", (req, res) => {
-    res.send(header + recipes + chat);
+    res.send(header + recipes + chat + footer);
 });
 
 app.get("/recipes/:recipe_name", (req, res) => {
@@ -56,6 +57,10 @@ app.get("/recipes/:recipe_name", (req, res) => {
 
 app.get("/", (req, res) => {
     res.send(header + homepage +footer +chat);
+});
+
+app.get("/myAccount", (req, res) => {
+    res.send(header + myAccount +footer +chat);
 });
 
 //chat management

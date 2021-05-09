@@ -23,7 +23,7 @@
         $(`#block${currentForBig}`).append(`
         <div class="col-3 recipe-carusel-item">
                 <div class="img-size">
-                    <a href="./recipes/${recipe.name}" ><img class="home-image active image-style" src="./../global/images/${recipe.img}.jpg" alt=""></a>
+                    <a href="./recipes/${recipe.name}" ><img class="home-image" src="./../global/images/${recipe.img}.jpg" alt=""></a>
                 </div>
                 <div class="image-name">
                     <p>${recipe.name}</p>
