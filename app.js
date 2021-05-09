@@ -35,6 +35,9 @@ app.use(chatRouter.router);
 //app.use(sessionRouter.router);
 app.use(recipeRouter.router);
 
+const homeRecipesRouter = require("./routes/homeRecipes.js");
+app.use(homeRecipesRouter.router);
+
 
 const header = fs.readFileSync(__dirname + '/public/header/header.html', 'utf8');
 const recipes = fs.readFileSync(__dirname + '/public/recipes/recipes.html', 'utf8');

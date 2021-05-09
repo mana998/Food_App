@@ -1,8 +1,28 @@
 const router = require("express").Router();
 const db = require("./../database/connection").connection; 
 
+<<<<<<< HEAD
 const Recipe = require("./../models/Recipe").Recipe;
 const Ingredient = require("./../models/Ingredient").Ingredient; 
+=======
+class Recipe {
+    constructor (name, description, user_id, recipe_img) {
+        this.name = name;
+        this.description = description;
+        this.user_id = user_id;
+        this.recipe_img = recipe_img;
+    }
+}
+class Ingredient{
+    constructor (name, measure, amount) {
+        this.name = name;
+        this.measure = measure;
+        this.amount = amount;
+ 
+    }
+}
+
+>>>>>>> 9d364cb32a41c35585ac60fd4970392a9dc6b1fe
 
 router.get("/api/recipes/:recipe_name", (req, res) => {
     
@@ -21,8 +41,12 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
 
                 ingredients.push(new Ingredient(result[ingredient].ingredient_name, result[ingredient].measurement_name, result[ingredient].amount));
             }
+<<<<<<< HEAD
             const recipe = new Recipe(result[0].recipe_id, result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img );
          
+=======
+            const recipe = new Recipe(result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img );
+>>>>>>> 9d364cb32a41c35585ac60fd4970392a9dc6b1fe
             res.send({
                         recipe: recipe,
                         ingredients: ingredients
