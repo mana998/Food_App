@@ -10,7 +10,6 @@ function generateRecipe(recipe){
             <p>${recipe.name}</p>
             <img class="icon" src="./../global/icons/heart.png" alt="heart icon"></img>
             <img class="icon" src="./../global/icons/update.png" alt="update icon"></img>
-
         </div>
     
     </div>`);
@@ -53,13 +52,7 @@ if (window.location.pathname.match("myAccount")) {
     renderMyRecipes(1, "favorites"); //session user id
 }
 
-function show(id){
-    $("#id").css("display","inherit");
-}
 
-function hide(id){
-    $("#id").css("display","none");
-}
 
 $(document).ready(function(){
     $("#favorite").click(function(){
@@ -68,9 +61,4 @@ $(document).ready(function(){
       });
     });
 
-    $("#myRecipes").click(function(){
-        $("#your-recipes").toggle(500, function(){
-          alert("Click again to see/hide recipes");
-        });
-      });
 });
