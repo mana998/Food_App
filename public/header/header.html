@@ -5,10 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodApp</title>
-    <link rel="stylesheet" type="text/css" href="/css/global.css"/>
-    <link rel="stylesheet" type="text/css" href="/header/header.css"/>
-    <link rel="stylesheet" type="text/css" href="/footer/footer.css"/>
-    <script src="/header/header.js"></script>
 </head>
 <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -17,7 +13,34 @@
             <a href="/"><li>Home</li></a>
             <a href="/"><li>Fridge</li></a>
             <a href="/"><li>Recipes</li></a>
-            <a href="/"><li>Login</li></a>
+            <button data-toggle="modal" data-target="#loginModal"><li>Login</li></button>
         </ul>
     </nav>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <form id=login>
+                  <label for="usermane">Username</label>
+                  <input type="text" id="username" name="username">
+                  <label for="password">Password</label>
+                  <input type="password" id="password" name="password">
+              </form> 
+              <p id="message">Make sure you enter correct username and password.</p>   
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="loginButton" class="btn btn-primary" onClick="login()">Login</button>
+              <button type="button" id="register" class="btn btn-secondary" onClick="registerStart()">Register</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="/header/login.js"></script>
     <main>
