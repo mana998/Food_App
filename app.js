@@ -40,6 +40,9 @@ app.use(sessionRouter.router);
 const recipeRouter = require("./routes/recipe.js");
 app.use(recipeRouter.router);
 
+const homeRecipesRouter = require("./routes/homeRecipes.js");
+app.use(homeRecipesRouter.router);
+
 
 const fs = require('fs');
 
@@ -62,10 +65,20 @@ io.on('connection', (socket) => {
 });
 
 const recipe = fs.readFileSync(__dirname + '/public/recipe/recipe.html', 'utf8');
+const footer = fs.readFileSync(__dirname + '/public/footer/footer.html', 'utf8');
 
 app.get("/recipe/:recipe_name", (req, res) => {
 
-    res.send(header + recipe);
+
+    res.send(header + recipe + chat + footer);
+
+});
+
+const homepage = fs.readFileSync(__dirname + '/public/homepage/homepage.html', 'utf8');
+app.get("/", (req, res) => {
+
+    res.send(header + homepage +footer +chat);
+
 });
 
 //database example queries!! for USER table it will be run every time you run app.js
