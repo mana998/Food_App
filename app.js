@@ -69,8 +69,8 @@ io.on('connection', (socket) => {
 
     socket.on("online users change", (data) => {
         //send to all
-        console.log("update");
-        io.emit(`user list update`);
+        console.log("update server");
+        io.emit("user list update", {message: "update"});
     })
 });
 

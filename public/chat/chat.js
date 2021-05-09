@@ -87,14 +87,10 @@ function sendMessage(id) {
     //send message
     socket.emit("client send message", { to: id, from: myId , message : message})
 };
-//receive message - store id from login
-socket.on(`server send message ${myId}`, (data) => {
-    console.log("received msg", data);
-    //add message to chat
-    renderMessage(data.from, false, data.message);
-})
 
-socket.on(`user list upadte`, () => {
+//??
+socket.on("user list upadte", (data) => {
+    console.log("update");
     renderChat();
 })
 
@@ -120,16 +116,25 @@ function openChat(user) {
 
 async function renderChat() {
     myId = await getSession();
-    //get only username and id except user with specified id
-    let fetchString = `/api/chat?id=${myId}`;
-    const response = await fetch(fetchString);
-    const result = await response.json();
-    if (result.users.length) {
-        result.users.map(user => {
-            $(".chat-container").append(generateUser(user));
+    if (myId) {
+        //setup socket
+        socket.on(`server send message ${myId}`, (data) => {
+            console.log("received msg", data);
+            //add message to chat
+            renderMessage(data.from, false, data.message);
         });
-    } else {
-        $(append).append("<h2>No users found</h2>");
+        //get only username and id except user with specified id
+        let fetchString = `/api/chat?id=${myId}`;
+        const response = await fetch(fetchString);
+        const result = await response.json();
+        if (result.users.length) {
+            $(".chat-container .user-chat").remove();
+            result.users.map(user => {
+                $(".chat-container").append(generateUser(user));
+            });
+        } else {
+            $(append).append("<h2>No users found</h2>");
+        }
     }
 };
 
@@ -143,6 +148,7 @@ async function getSession() {
     } else {
         console.log("Something went wrong");
     }
+
 };
 
 function closeChat(id) {
@@ -153,8 +159,6 @@ function closeChat(id) {
             //console.log("element",element);
             return Number(element.id) === Number(id)}
     );
-    //remove
-    openChats.splice(userId, 1);
     //move all the other elements
     if (userId < openChats.length) {
         for (let i = userId; i < openChats.length; i++) {
@@ -165,7 +169,5 @@ function closeChat(id) {
     }
 }
 
-if (myId) {
-    renderChat();
-}
+renderChat();
 
