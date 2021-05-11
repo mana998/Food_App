@@ -1,0 +1,47 @@
+#login-style{
+    color: #BA9291 !important;
+    border-left: 1px solid #ba9291; 
+    font-size: 1.5em;
+    padding-left:2%;
+    cursor: pointer;
+}
+
+#loginButton{
+    background-color: #BA9291;
+    border: 1px solid #BA9291;
+}
+
+nav{
+    box-shadow: 0 0 5px #c09c9c;
+
+    border: 1px solid #ba9291;
+    padding: 5% 5% 0% 5%;
+    
+}
+
+
+a.nav-link{
+    color: #BA9291 !important;
+    border-right: 1px solid #ba9291; 
+    font-size: 1.5em;
+}
+
+.navbar-light .navbar-toggler {
+    color: #BA9291;
+    border-color: #BA9291 !important;
+}
+
+@media only screen and (max-width: 992px) {
+    #login-style{
+
+        padding-left:0%;
+
+        border-left: none; 
+
+    }
+    a.nav-link{
+  
+        border-right: none;
+
+    }
+  }

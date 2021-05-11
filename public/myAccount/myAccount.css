@@ -1,5 +1,5 @@
 .account-page{
-    padding: 5% 10% 0% 10%;
+    padding: 3% 10% 0% 10%;
   
 }
 
@@ -18,7 +18,10 @@
     cursor: pointer;
 }
 
-
+#submit-button{
+    background-color: #BA9291 !important;
+    border-color: #BA9291 !important;
+}
 
 .account-recipe-item{
     background-color: white;
@@ -59,9 +62,10 @@
 }
 
 .icon{
-    max-width: 8%;
-    max-height: 8%;
+    max-width: 10%;
+    max-height: 10%;
     cursor: pointer;
+    margin-left: 5%;
     
 }
 

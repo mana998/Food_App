@@ -16,8 +16,8 @@ function generateRecipe(recipe){
 }
 
 async function renderMyRecipes(filter1, filter2) {
+//change the code, THE FILTERS!!!!!!!
 
-    
     let fetchString = `/api/recipes?user_id=${filter1}`;
     const response = await fetch(fetchString);
     const result = await response.json();

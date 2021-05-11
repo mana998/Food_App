@@ -60,7 +60,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/myAccount", (req, res) => {
-    res.send(header + myAccount +footer +chat);
+    res.send(header + chat + myAccount +footer);
 });
 
 //chat management
