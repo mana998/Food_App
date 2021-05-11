@@ -73,10 +73,24 @@
    
 }
 
-
+#add-ingredient{
+    margin-left: 5%;
+    cursor: pointer;
+    
+}
 
 #myRecipes{
     padding-bottom: 2%;
     font-weight: bold;
     color: #BA9291;
+}
+
+.row-style-label{
+    margin-right: 0px !important;
+    margin-left: 0px !important; 
+    
+}
+.row-style{
+ 
+    margin: 0% 0% 2% 0% !important;    
 }

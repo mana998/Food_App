@@ -50,15 +50,66 @@ async function renderMyRecipes(filter1, filter2) {
 //render recipes automatically if on recipes page
 if (window.location.pathname.match("myAccount")) {
     renderMyRecipes(1, "favorites"); //session user id
+    renderIngredients();
 }
 
 
 
 $(document).ready(function(){
+    let state =0;
     $("#favorite").click(function(){
-      $("#favorite-recipes").toggle(500, function(){
-        alert("Click again to see/hide recipes");
-      });
+        $("#favorite-recipes").toggle(500, function(){
+            
+        });
+
+        let active =  $("#add-icon").attr("src");
+        if (active == "./../global/icons/hide.png"){
+            $("#add-icon").attr("src","./../global/icons/spread.png");
+        }
+        else{
+        $("#add-icon").attr("src","./../global/icons/hide.png");
+        }
     });
 
 });
+
+function addIngredientField(){
+    $("#ingredientsArray").append(`
+    <div class="row row-style" >
+        <select class="form-control col-6 ingredientsList" id="recipe_ingredients" placeholder="Enter ingredient">
+
+        </select>
+        <input type="number" class="form-control  col-3" name = "ingredient_amount" id="recipe_ingredients" placeholder="Amount">
+        <select class="form-control  col-2" id="recipe_ingredients" placeholder="Choose measurement">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select> 
+        <p onclick="removeIngredientField()" id="add-ingredient"><b>-</b></p>                             
+    </div>
+    `)
+    renderIngredients();
+}
+
+function removeIngredientField(){
+    $("#ingredientsArray").children().last().remove();
+}
+
+//get all ingredients options for form
+
+
+async function renderIngredients() {
+
+    
+    let fetchString = `/api/ingredients`;
+    const response = await fetch(fetchString);
+    const result = await response.json(); 
+    
+    result.ingredients.map( ingredient => {
+        $(".ingredientsList").append(`
+        <option>${ingredient.name}</option>
+        `)
+    })
+}

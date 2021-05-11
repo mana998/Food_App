@@ -12,7 +12,7 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
     db.query('SELECT * FROM recipe INNER JOIN ingredient_has_recipe ON recipe.recipe_id = ingredient_has_recipe.recipe_id INNER JOIN ingredient ON ingredient_has_recipe.ingredient_id = ingredient.ingredient_id INNER JOIN measurement ON ingredient.measurement_id = measurement.measurement_id WHERE recipe.recipe_name=?;',[req.params.recipe_name], (error, result, fields) => {
         
         
-        //this part should be outside
+        
         if (result.length != 0){
             
             //write recipe to object
@@ -31,6 +31,41 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
    
             res.send({
                 message: "This recipe does not exists."
+            });
+        }
+    });
+ 
+
+    
+})
+
+router.get("/api/ingredients", (req, res) => {
+    
+    //get ingredients from db
+
+
+    db.query('SELECT * FROM ingredient;', (error, result, fields) => {
+        
+        
+        
+        if (result.length != 0){
+            
+            //write recipe to object
+            const ingredients = [];
+            for (const ingredient in result){
+
+                ingredients.push(new Ingredient(result[ingredient].ingredient_name, result[ingredient].measurement_name, result[ingredient].amount));
+            }
+
+         
+            res.send({
+ 
+                        ingredients: ingredients
+                    });
+        }else{
+   
+            res.send({
+                message: "There is no ingredients."
             });
         }
     });
