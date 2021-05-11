@@ -25,14 +25,14 @@ app.use(express.static(__dirname + '/public'));
 
 const recipesRouter = require("./routes/recipes.js");
 const chatRouter = require("./routes/chat.js");
-////const loginRouter = require("./routes/login.js");
-//const sessionRouter = require("./routes/session.js");
+const loginRouter = require("./routes/login.js");
+const sessionRouter = require("./routes/session.js");
 const recipeRouter = require("./routes/recipe.js");
 
 app.use(recipesRouter.router);
 app.use(chatRouter.router);
-//app.use(loginRouter.router);
-//app.use(sessionRouter.router);
+app.use(loginRouter.router);
+app.use(sessionRouter.router);
 app.use(recipeRouter.router);
 
 const homeRecipesRouter = require("./routes/homeRecipes.js");
@@ -70,6 +70,12 @@ io.on('connection', (socket) => {
         //send to everyone but sender
         //will receive depending on passed id
         socket.broadcast.emit(`server send message ${data.to}`, {to: data.to, from: data.from, message: data.message});
+    })
+
+    socket.on("online users change", (data) => {
+        //send to all
+        console.log("update server");
+        io.emit("user list update", {message: "update"});
     })
 });
 
