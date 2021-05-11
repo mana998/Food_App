@@ -5,14 +5,29 @@ const Recipe = require("./../models/Recipe").Recipe;
 
 router.get("/api/recipes", (req, res) => {
 
-    let page = req.query.page;
+    let page = req.query.page || 1;
     let size = req.query.size;
     //add filtering
     let filter = req.query.filter;
+    let user_id =req.query.user_id;
 
-    let query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;'
+    let query = "";
+    let values = [];
 
-    db.query(query, [Number(size), Number((page - 1) * size)], (error, result, fields) => {
+    if (user_id){
+        query = 'SELECT recipe_name, recipe_img FROM recipe WHERE recipe.user_id = ?;';
+        values = [user_id];
+    }else if (filter ==="favorites"){
+        query = 'SELECT recipe_name, recipe_img FROM recipe ;';
+    }
+    else {
+        query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;';
+        values = [Number(size), Number((page - 1) * size)];
+    }
+
+
+    db.query(query, values, (error, result, fields) => {
+    
         //this part should be outside
         if (result && result.length) {
             //write recipe to object

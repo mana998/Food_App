@@ -1,8 +1,8 @@
-async function renderRecipe() {
+(async function renderRecipe() {
     let fetchRecipe = `/api${window.location.pathname}`;
     const response = await fetch(fetchRecipe);
     const result = await response.json();
-
+    
     if (result.message){
         $(".flex-container").append(`<h1 class="page-title" >${result.message}</h1>`);
     }
@@ -12,7 +12,7 @@ async function renderRecipe() {
     $(".flex-container").append(`
     <div id ="recipe-container" class="row">
         <div class="col-12 col-lg-8">
-            <img class="recipe-img" src="./../recipes/img/chocolate cake.png" alt="${result.recipe.name} image"}>
+            <img class="recipe-img" src="./../global/images/${result.recipe.img}.jpg" alt="${result.recipe.name} image"}>
         </div>
         <div id ="ingredients" class=" col-12 col-lg-4 "></div>
     </div>`);
@@ -38,4 +38,4 @@ async function renderRecipe() {
     result.recipe.description.split(".").forEach(line => {
         $("#descripton").append(`<p>${line}.</p>`)})
 
-};
+})();
