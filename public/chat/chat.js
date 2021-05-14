@@ -156,9 +156,10 @@ function closeChat(id) {
     //find index of element to remove
     let userId = openChats.findIndex(
         element => {
-            //console.log("element",element);
             return Number(element.id) === Number(id)}
     );
+    //remove from open chats;
+    openChats.splice(userId, 1);
     //move all the other elements
     if (userId < openChats.length) {
         for (let i = userId; i < openChats.length; i++) {
