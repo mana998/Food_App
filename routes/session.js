@@ -52,6 +52,16 @@ router.post("/setsession/chat", (req, res) => {
     }
 })
 
+router.get("/destroysession", (req, res) => {
+    req.session.destroy(error => {
+        if (error) {
+            res.send({ message: "Something went wrong"});
+        } else {
+            res.send({ message: "Session destroyed"});
+        }
+    });
+})
+
 module.exports = {
     router: router
 }

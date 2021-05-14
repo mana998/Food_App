@@ -162,7 +162,7 @@ async function renderChat() {
         let fetchString = `/api/chat?id=${myId}`;
         const response = await fetch(fetchString);
         const result = await response.json();
-        if (result.users.length) {
+        if (result.users && result.users.length) {
             $(".chat-container .user-chat").remove();
             result.users.map(user => {
                 $(".chat-container").append(generateUser(user));

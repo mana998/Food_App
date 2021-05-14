@@ -48,19 +48,23 @@ const homepage = fs.readFileSync(__dirname + '/public/homepage/homepage.html', '
 const myAccount = fs.readFileSync(__dirname + '/public/myAccount/myAccount.html', 'utf8');
 
 app.get("/recipes", (req, res) => {
-    res.send(header + recipes + chat + footer);
+    res.send(header + chat + recipes + footer);
 });
 
 app.get("/recipes/:recipe_name", (req, res) => {
-    res.send(header + recipe + chat + footer);
+    res.send(header + chat + recipe + footer);
 });
 
 app.get("/", (req, res) => {
-    res.send(header + homepage +footer +chat);
+    res.send(header + chat + homepage + footer);
 });
 
-app.get("/myAccount", (req, res) => {
-    res.send(header + chat + myAccount +footer);
+app.get("/myAccount/:user_id", (req, res) => {
+    if (req.params.user_id) {
+        res.send(header + chat + myAccount +footer);
+    } else {
+        res.send(header + chat + homepage + footer);
+    }
 });
 
 //chat management
@@ -74,7 +78,6 @@ io.on('connection', (socket) => {
 
     socket.on("online users change", (data) => {
         //send to all
-        console.log("update server");
         io.emit("user list update", {message: "update"});
     })
 });

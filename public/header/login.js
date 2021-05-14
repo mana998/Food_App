@@ -18,12 +18,12 @@ async function login(){
     if (result.id) {
         result = await setSession(result);
         if (result.id) {
-            console.log(result.id);
             result = await updateLoginStatus(result.id);
             if (result.id) {
                 await renderChat();
                 await socket.emit("online users change");
                 $('#loginModal').modal('hide');
+                setLogoutHtml(result.id);
             }
         }
     }
@@ -92,3 +92,56 @@ async function register(){
     const result = await response.json();
     $("#message").text(result.message);
 }
+
+async function logout(id) {
+    let fetchString = `/api/logout/${id}`;
+    let response = await fetch(fetchString);
+    let result = await response.json();
+    if (result.id) {
+        let fetchString = `/destroysession`;
+        let response = await fetch(fetchString);
+        let result = await response.json();
+        if (result.message === "Session destroyed") {
+            setLoginHtml();
+        } else {
+            alert (result.message);
+        }
+    } else {
+        alert (result.message);
+    }
+    //redirect
+    window.location.replace('/');
+}
+
+function setLoginHtml(){
+    $('#nav-my-account').hide();
+    $('#login-style').text("Login").attr({"data-target": "#loginModal", "data-toggle": "modal"}).removeAttr('onClick');
+}
+
+function setLogoutHtml(id){
+    $("#my-account").attr("href", `/myAccount/${id}`)
+    $('#nav-my-account').show();
+    $('#login-style').text("Logout").removeAttr('data-target data-toggle').attr('onClick', `logout(${id});`);
+}
+
+window.addEventListener("load", () => checkSession());
+
+async function checkSession() {
+    const response = await getLoginSession();
+    if (response) {
+        setLogoutHtml(response);
+    } else {
+        setLoginHtml();
+    }
+}
+
+async function getLoginSession() {
+    let fetchString = `/getsession`;
+    const response = await fetch(fetchString);
+    const result = await response.json();
+    if (result.id) {
+        return result.id;
+    } else {
+        console.log("Something went wrong");
+    }
+};

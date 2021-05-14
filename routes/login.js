@@ -38,21 +38,31 @@ router.post("/api/login", (req, res) => {
 })
 
 router.get("/api/login/:id", (req, res) => {
-    db.query('UPDATE user SET active=1 WHERE user_id=?;',[req.params.id], (error, result, fields) => {
-        if (result.changedRows !==1) {
-            res.send({
-                message: "Something went wrong. Try again."
-            });
-         } else {
-            res.send({id: req.params.id});
-         }
-    }); 
+    updateActive(req.params.id, 1, res);
 })
 
+router.get("/api/logout/:id", (req, res) => {
+    updateActive(req.params.id, 0, res);
+})
+
+function updateActive(id, active, res) {
+    db.query('UPDATE user SET active=? WHERE user_id=?;',[active, id], (error, result, fields) => {
+        if (result.changedRows !==1) {
+            //console.log("false");
+            res.send({message: "Something went wrong. Try again."});
+            //return false
+        } else {
+            //console.log("true");
+            res.send({id: id});
+            //return true;
+        }
+
+    }); 
+}
 
 router.post("/api/register", (req, res) => {
     
-    console.log(req.body.username);
+    //console.log(req.body.username);
 
     db.query('SELECT * FROM user WHERE username=?;',[req.body.username], (error, result, fields) => {
         //console.log("error", error)
