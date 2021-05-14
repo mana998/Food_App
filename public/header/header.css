@@ -35,7 +35,15 @@ a.nav-link{
 }
 
 main {
+    padding-top: 4em;
     min-height: calc(100vh - 10px - 4em);  
+}
+
+.fixed {
+    position: fixed;
+    z-index: 2;
+    background: white;
+    width: 100%;
 }
 
 @media only screen and (max-width: 992px) {
@@ -50,5 +58,28 @@ main {
   
         border-right: none;
 
+    }
+
+  }
+
+  @media  (max-width: 767px) {
+    .fixed {
+        position: fixed;
+        z-index: 2;
+        /*background: none;
+        /*width: 10%;*/
+        border:none;
+        box-shadow: none;
+    }
+
+    .nav-item {
+        background-color: white;
+        width: 100%;
+    }
+
+    #login-style {
+        display: block;
+        background-color: white;
+        padding: .5rem 0;
     }
   }
