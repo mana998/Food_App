@@ -32,7 +32,7 @@ async function login(){
 
 async function setSession(loginResult) {
     //console.log("result session", result);
-    const fetchString = `/setsession`;
+    const fetchString = `/setsession/id`;
     const response = await fetch(fetchString, {
         method: 'POST',
         headers: {
