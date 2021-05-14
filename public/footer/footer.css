@@ -1,9 +1,5 @@
 footer {
- 
-    color: black;
-
-  
-    
+    color: black;  
     clear: both;
     position: relative;
     text-align: center;
@@ -11,6 +7,4 @@ footer {
     margin-top: -20px;
     border-top: 1px solid black;
     z-index: -1;
-
-
 }

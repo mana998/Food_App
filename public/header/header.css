@@ -13,7 +13,7 @@
 
 nav{
     box-shadow: 0 0 5px #c09c9c;
-
+    height: 4em;
     border: 1px solid #ba9291;
     padding: 5% 5% 0% 5%;
     
@@ -29,6 +29,10 @@ a.nav-link{
 .navbar-light .navbar-toggler {
     color: #BA9291;
     border-color: #BA9291 !important;
+}
+
+main {
+    min-height: calc(100vh - 10px - 4em);  
 }
 
 @media only screen and (max-width: 992px) {
