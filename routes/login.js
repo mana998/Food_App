@@ -17,15 +17,8 @@ router.post("/api/login", (req, res) => {
             //console.log("result", result[0].user_id)
             bcrypt.compare(req.body.password, result[0].password, (error, match) => {
                 if (match) {
-                    db.query('UPDATE user SET active=1 WHERE user_id=?;',[result[0].user_id], (error, updateResult, fields) => {
-                        //console.log(result);
-                        if (updateResult.changedRows !==1) {
-                            res.send({
-                                message: "Something went wrong. Try again."
-                            });
-                         } else {
-                            res.send({id: result[0].user_id});
-                         }
+                    res.send({
+                        id: result[0].user_id
                     });
                 } else {
                     res.send({
@@ -41,9 +34,19 @@ router.post("/api/login", (req, res) => {
             });
         }
     });
- 
-
     
+})
+
+router.get("/api/login/:id", (req, res) => {
+    db.query('UPDATE user SET active=1 WHERE user_id=?;',[req.params.id], (error, result, fields) => {
+        if (result.changedRows !==1) {
+            res.send({
+                message: "Something went wrong. Try again."
+            });
+         } else {
+            res.send({id: req.params.id});
+         }
+    }); 
 })
 
 

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 router.get("/getsession", (req, res) => {
-    console.log("getid", req.session.userId);
+    //console.log("getid", req.session.userId);
     if(typeof(req.session.id) == Number) {
         console.log("number");
     }
@@ -9,10 +9,10 @@ router.get("/getsession", (req, res) => {
 })
 
 router.post("/setsession", (req, res) => {
-    console.log("session id",req.body.id);
+    //console.log("session id",req.body.id);
     if (req.body.id) {
         req.session.userId = req.body.id;
-        res.send({message: "Session set"});
+        res.send({id: req.body.id, message: "Session set"});
     } else {
         res.send({message: "Session not set"});
     }

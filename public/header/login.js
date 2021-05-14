@@ -3,7 +3,6 @@ const saltRounds = 15;
 async function login(){
     let username = document.getElementById("username");
     let password = document.getElementById("password");
-    console.log("username",username,"password",password);
     let fetchString = `/api/login`;
     const response = await fetch(fetchString, {
         method: 'POST',
@@ -15,33 +14,42 @@ async function login(){
     });
     username.value="";
     password.vaule="";
-    const result = await response.json();
-    console.log("RESUUUUUUUULT", result);
-    await setSession(result);
-    await renderChat();
-    await socket.emit("online users change")
+    let result = await response.json();
+    if (result.id) {
+        result = await setSession(result);
+        if (result.id) {
+            console.log(result.id);
+            result = await updateLoginStatus(result.id);
+            if (result.id) {
+                await renderChat();
+                await socket.emit("online users change");
+                $('#loginModal').modal('hide');
+            }
+        }
+    }
+    $("#message").text(result.message);
 }
 
 async function setSession(loginResult) {
-    if (loginResult.message) {
-        $("#message").text(loginResult.message);
-    } else if (loginResult.id) { //set session
-        //console.log("result session", result);
-        const fetchString = `/setsession`;
-        const response = await fetch(fetchString, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: loginResult.id})
-        });
-        const result = await response.json();
-        console.log("session", result);
-        if (result.message === "Session set") {
-            $('#loginModal').modal('hide');
-        }
-    }
+    //console.log("result session", result);
+    const fetchString = `/setsession`;
+    const response = await fetch(fetchString, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: loginResult.id})
+    });
+    const result = await response.json();
+    return result;
+}
+
+async function updateLoginStatus(id) {
+    const fetchString = `/api/login/${id}`;
+    const response = await fetch(fetchString);
+    const result = await response.json();
+    return result;
 }
 
 function registerStart(){
@@ -82,9 +90,5 @@ async function register(){
         body: JSON.stringify({username: username.value, password: password.value})
     });
     const result = await response.json();
-    if (result.message) {
-        $("#message").text(result.message);
-    } else { 
-
-    }
+    $("#message").text(result.message);
 }
