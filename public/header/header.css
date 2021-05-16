@@ -36,7 +36,7 @@ a.nav-link{
 
 main {
     padding-top: 4em;
-    min-height: calc(100vh - 10px - 4em);  
+    min-height: calc(100vh - 10px);  
 }
 
 .fixed {
