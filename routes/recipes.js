@@ -9,21 +9,11 @@ router.get("/api/recipes", (req, res) => {
     let size = req.query.size;
     //add filtering
     let filter = req.query.filter;
-    let user_id =req.query.user_id;
 
-    let query = "";
-    let values = [];
-
-    if (user_id){
-        query = 'SELECT recipe_name, recipe_img FROM recipe WHERE recipe.user_id = ?;';
-        values = [user_id];
-    }else if (filter ==="favorites"){
-        query = 'SELECT recipe_name, recipe_img FROM recipe ;';
-    }
-    else {
-        query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;';
-        values = [Number(size), Number((page - 1) * size)];
-    }
+   
+    let query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;';
+    let values = [Number(size), Number((page - 1) * size)];
+    
 
 
     db.query(query, values, (error, result, fields) => {
@@ -42,7 +32,41 @@ router.get("/api/recipes", (req, res) => {
     });
 })
 
+router.get("/api/recipes/:user_id", (req, res) => {
 
+
+    //add filtering
+    let filter = req.query.filter;
+    let user_id = req.params["user_id"];
+ 
+    let query = "";
+    let values= "";
+
+   if (filter == ""){
+        query = 'SELECT recipe_id, recipe_name, recipe_img FROM recipe WHERE recipe.user_id = ? ;';
+        values = [user_id];
+   }else if (filter == "favorite"){
+        query = 'SELECT recipe.recipe_id, recipe.recipe_name, recipe.recipe_img FROM recipe INNER JOIN favorite ON recipe.recipe_id = favorite.recipe_id WHERE favorite.user_id = ?;';
+        values = [user_id];
+   }else {
+        res.send({message: "No recipes found"});
+   }
+   
+
+    db.query(query, values, (error, result, fields) => {
+
+        if (result && result.length) {
+            //write recipe to object
+            const recipes = [];
+            for (const recipe of result) {
+                recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,'', '', recipe.recipe_img));
+            }
+            res.send({recipes});
+        } else {
+            res.send({message: "No recipes found"});
+        }
+    });
+})
 
 module.exports = {
     router: router

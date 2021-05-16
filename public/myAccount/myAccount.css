@@ -23,6 +23,11 @@
     border-color: #BA9291 !important;
 }
 
+#upload-button{
+    background-color: #BA9291 !important;
+    border-color: #BA9291 !important;
+    margin-top: 3%;
+}
 .account-recipe-item{
     background-color: white;
     height: 60vh;

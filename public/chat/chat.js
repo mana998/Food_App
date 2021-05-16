@@ -144,7 +144,8 @@ async function getSession() {
     const result = await response.json();
     if (result.id) {
         console.log("id", result.id);
-        return result.id;
+        
+
     } else {
         console.log("Something went wrong");
     }
