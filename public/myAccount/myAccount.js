@@ -20,21 +20,25 @@ function generateRecipe(recipe, container){
 //get logged in user rcipes and add them to the page
 async function renderMyRecipes(container,filter = "") {
     const user_id = await getLoginSession();
-    let fetchString = `/api/recipes/user/${user_id}?filter=${filter}`;
-    const response = await fetch(fetchString);
-    const result = await response.json();
-  
-    if (result.recipes && result.recipes.length) {
-        result.recipes.map(recipe => {
-            $(`#${container}`).append(generateRecipe(recipe,container));
-            checkFavorite(recipe.id, container);
-        });
-    } else if (result.message) {
-        $(`#${container}`).append(`<h2>${result.message}</h2>`);
-    } else {
-        $(`#${container}`).append(`<h2>Something went wrong</h2>`);
+    if (user_id){
+            let fetchString = `/api/recipes/user/${user_id}?filter=${filter}`;
+        const response = await fetch(fetchString);
+        const result = await response.json();
+    
+        if (result.recipes && result.recipes.length) {
+            result.recipes.map(recipe => {
+                $(`#${container}`).append(generateRecipe(recipe,container));
+                checkFavorite(recipe.id, container);
+            });
+        } else if (result.message) {
+            $(`#${container}`).append(`<h2>${result.message}</h2>`);
+        } else {
+            $(`#${container}`).append(`<h2>Something went wrong</h2>`);
+        }
+    }else{
+        window.location.replace('/');
     }
-
+    
 };
 
 //render recipes automatically if on recipes page
