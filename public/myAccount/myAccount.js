@@ -15,7 +15,6 @@ function generateRecipe(recipe, container){
         <p id="recipe_id" hidden>${recipe.id}</p>
     </div>`
     )
-    
 };
 
 //get logged in user rcipes and add them to the page
