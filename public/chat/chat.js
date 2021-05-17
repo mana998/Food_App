@@ -1,3 +1,22 @@
+//save messages on page change
+//classes only used here
+class Message {
+    constructor(from, sender, text) {
+        this.from = from;
+        this.sender = sender;
+        this.text = text;
+    }
+}
+
+class Chat {
+    constructor(id, name, messages) {
+        this.id = id;
+        this.name = name;
+        this.messages = messages || [];
+    }
+}
+
+
 //setup socket
 const socket = io();
 
@@ -46,7 +65,10 @@ function toggleChat(id) {
     }
 }
 
+//opened single chat
 let openChats = [];
+//all selected chats by id
+let chats = {}; 
 
 //generate one user in chat list
 function generateUser(user) {
@@ -58,10 +80,10 @@ function generateUser(user) {
 }
 
 //generate separate user chat
-function generateUserChat(user) {
+function generateUserChat(user, index) {
     //console.log(user);
     return(
-        `<div class="user-chat-item chat ${user.id}" style="right: calc(15em * (${openChats.length}))">
+        `<div class="user-chat-item chat ${user.id}" style="right: calc(15em * (${index >= 0 ? index + 1 : openChats.length}))">
             <div class="control-bar-user ${user.id}" onclick="toggleChat(${user.id})">${user.name}
                 
             </div>
@@ -83,14 +105,16 @@ function sendMessage(id) {
     //console.log("sent msg");
     //console.log(message);
     //add your message to chat
-    renderMessage(id, true, message)
+    renderMessage(id, true, message);
+    chats[id].messages.push(new Message(id, true, message));
+    //console.log("messaaage",chats);
     //send message
     socket.emit("client send message", { to: id, from: myId , message : message})
 };
 
 //??
 socket.on("user list upadte", (data) => {
-    console.log("update");
+    //console.log("update");
     renderChat();
 })
 
@@ -111,15 +135,26 @@ function openChat(user) {
         openChats.push({id: user.id, name: user.name, toggle: false});
         //console.log(user.id);
         $("body").append(generateUserChat(user));
+        chats[user.id] = new Chat(user.id, user.name);
     }
 }
 
 async function renderChat() {
-    myId = await getSession();
+    //console.log("renderChat()");
+    let response = await getSession();
+    if (response && response.length) {
+        myId = response[0];
+        chats = response[1] || {};
+        openChats = response[2] || [];
+    }
+    //console.log("myId", myId);
+    //console.log("chats", chats);
+    //console.log("openChats", openChats);
     if (myId) {
         //setup socket
         socket.on(`server send message ${myId}`, (data) => {
-            console.log("received msg", data);
+            //console.log("received msg", data);
+            chats[id].messages.push(new Message(data.from, false, data.message));
             //add message to chat
             renderMessage(data.from, false, data.message);
         });
@@ -127,7 +162,7 @@ async function renderChat() {
         let fetchString = `/api/chat?id=${myId}`;
         const response = await fetch(fetchString);
         const result = await response.json();
-        if (result.users.length) {
+        if (result.users && result.users.length) {
             $(".chat-container .user-chat").remove();
             result.users.map(user => {
                 $(".chat-container").append(generateUser(user));
@@ -136,6 +171,24 @@ async function renderChat() {
             $(append).append("<h2>No users found</h2>");
         }
     }
+    if (openChats && openChats.length) {
+        openChats.map((chat, index) => {
+            //console.log(chat);
+            //chats[chat.id] = new Chat(chat.id, chat.name);
+            //console.log("chat",chat,"index",index);
+            $("body").append(generateUserChat(chat, index));
+        })
+    }
+    if (chats) {
+        for (let key in chats) {
+            if (chats[key].messages && chats[key].messages.length) {
+                chats[key].messages.map(message => {
+                    //console.log("client 2",message);
+                    renderMessage(message.from, message.sender, message.text);
+                });
+            }
+        };
+    }
 };
 
 async function getSession() {
@@ -143,9 +196,7 @@ async function getSession() {
     const response = await fetch(fetchString);
     const result = await response.json();
     if (result.id) {
-        console.log("id", result.id);
-        
-
+        return [result.id, result.chats, result.openChats];
     } else {
         console.log("Something went wrong");
     }
@@ -157,9 +208,11 @@ function closeChat(id) {
     //find index of element to remove
     let userId = openChats.findIndex(
         element => {
-            //console.log("element",element);
             return Number(element.id) === Number(id)}
     );
+    //remove from open chats;
+    openChats.splice(userId, 1);
+    delete chats[id];
     //move all the other elements
     if (userId < openChats.length) {
         for (let i = userId; i < openChats.length; i++) {
@@ -170,5 +223,27 @@ function closeChat(id) {
     }
 }
 
-renderChat();
+window.addEventListener("load", () => renderChat());
 
+
+window.addEventListener("beforeunload", () => {
+    saveChatSession();
+});
+
+async function saveChatSession() {
+    const fetchString = `/setsession/chat`;
+    //console.log("chats unload", chats);
+    //console.log("openChats", openChats);
+    const response = await fetch(fetchString, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({chats: chats, openChats: openChats})
+    });
+    const result = await response.json();
+    if (result.message === "Session not set") {
+        alert("Something went wrong with loading chats.");
+    }
+}

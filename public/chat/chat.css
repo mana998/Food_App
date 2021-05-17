@@ -8,6 +8,9 @@
     background-color: #ffffff;
     border: 1px solid #f8f8f8;
     box-shadow: -0.1em 0.5em 0.5em #f8f8f8;
+    z-index: 2;
+    max-height: 40em;
+    overflow-y: scroll;
 }
 
 .user-chat-item {
@@ -17,16 +20,12 @@
     background-color: white;
     bottom: 0;
     position: absolute;
+    z-index: 2;
 }
 
 .control-bar-user {
     padding: 0.25 1em;
     background-color: #f8f8f8;
-}
-
-.specific-user-chat{
-    /*padding: 0.2em;*/
-    /*height: 15em;*/
 }
 
 .user-messages {

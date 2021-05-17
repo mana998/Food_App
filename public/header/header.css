@@ -13,12 +13,15 @@
 
 nav{
     box-shadow: 0 0 5px #c09c9c;
-
+    height: 4em;
     border: 1px solid #ba9291;
     padding: 5% 5% 0% 5%;
     
 }
 
+#nav-my-account {
+    display:none;
+}
 
 a.nav-link{
     color: #BA9291 !important;
@@ -29,6 +32,18 @@ a.nav-link{
 .navbar-light .navbar-toggler {
     color: #BA9291;
     border-color: #BA9291 !important;
+}
+
+main {
+    padding-top: 4em;
+    min-height: calc(100vh - 10px);  
+}
+
+.fixed {
+    position: fixed;
+    z-index: 2;
+    background: white;
+    width: 100%;
 }
 
 @media only screen and (max-width: 992px) {
@@ -43,5 +58,28 @@ a.nav-link{
   
         border-right: none;
 
+    }
+
+  }
+
+  @media  (max-width: 767px) {
+    .fixed {
+        position: fixed;
+        z-index: 2;
+        /*background: none;
+        /*width: 10%;*/
+        border:none;
+        box-shadow: none;
+    }
+
+    .nav-item {
+        background-color: white;
+        width: 100%;
+    }
+
+    #login-style {
+        display: block;
+        background-color: white;
+        padding: .5rem 0;
     }
   }

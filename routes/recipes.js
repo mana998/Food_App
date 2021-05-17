@@ -6,19 +6,17 @@ const Recipe = require("./../models/Recipe").Recipe;
 router.get("/api/recipes", (req, res) => {
 
     let page = req.query.page || 1;
-    let size = req.query.size;
+    let size = req.query.size || 1000;
     //add filtering
-    let filter = req.query.filter;
+    let filter = req.query.filter || "likes";
+    let direction = req.query.direction || "desc";
 
-   
-    let query = 'SELECT recipe_name, recipe_img FROM recipe LIMIT ? OFFSET ?;';
-    let values = [Number(size), Number((page - 1) * size)];
-    
-
+    //needs to be in there as else it is putting it into quotes
+    let query = `SELECT recipe_name, recipe_img FROM recipe ORDER BY ${filter} ${direction} LIMIT ? OFFSET ?;`;
+    values = [Number(size), Number((page - 1) * size)];
 
     db.query(query, values, (error, result, fields) => {
-    
-        //this part should be outside
+        //console.log("result", result);
         if (result && result.length) {
             //write recipe to object
             const recipes = [];
