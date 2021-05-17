@@ -196,7 +196,6 @@ async function getSession() {
     const response = await fetch(fetchString);
     const result = await response.json();
     if (result.id) {
-        //console.log("id", result.id, result.chats, result.openChats);
         return [result.id, result.chats, result.openChats];
     } else {
         console.log("Something went wrong");

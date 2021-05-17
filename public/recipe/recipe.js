@@ -2,7 +2,7 @@
     let fetchRecipe = `/api${window.location.pathname}`;
     const response = await fetch(fetchRecipe);
     const result = await response.json();
-    
+    console.log(result);
     if (result.message){
         $(".flex-container").append(`<h1 class="page-title" >${result.message}</h1>`);
     }
