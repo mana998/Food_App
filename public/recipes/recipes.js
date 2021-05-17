@@ -52,6 +52,7 @@ function renderSortingPaging() {
     return result;
 }
 
+
 function renderPageButton(symbol, value) {
     return `<button class="page" onClick="pageSort.page += ${value}; renderRecipes();">${symbol}</button>`
 }
