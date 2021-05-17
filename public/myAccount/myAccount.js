@@ -19,7 +19,7 @@ function generateRecipe(recipe, container){
 
 //get logged in user rcipes and add them to the page
 async function renderMyRecipes(container,filter = "") {
-    const user_id = 6;
+    const user_id = await getLoginSession();
     let fetchString = `/api/recipes/user/${user_id}?filter=${filter}`;
     const response = await fetch(fetchString);
     const result = await response.json();
@@ -202,7 +202,7 @@ async function addOrDeleteFromFavorite(recipe_id, heart_id){
 //fetch all favorite and check if recipe id is there if yes give heart filled 
 async function checkFavorite(recipe_id, container) {
     const user_id = 6;
-    let fetchString = `/api/recipes/${user_id}?filter=favorite`;
+    let fetchString = `/api/recipes/user/${user_id}?filter=favorite`;
     const response = await fetch(fetchString);
     const result = await response.json();
     if (result && result.recipes){
