@@ -19,7 +19,7 @@
     border: 1px solid #f8f8f8;
     background-color: white;
     bottom: 0;
-    position: absolute;
+    position: fixed;
     z-index: 2;
 }
 
