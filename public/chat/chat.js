@@ -168,7 +168,7 @@ async function renderChat() {
                 $(".chat-container").append(generateUser(user));
             });
         } else {
-            $(append).append("<h2>No users found</h2>");
+            $(".chat-container").append("<h2>No users found</h2>");
         }
     }
     if (openChats && openChats.length) {
