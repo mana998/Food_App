@@ -30,8 +30,7 @@ router.get("/api/recipes", (req, res) => {
     });
 })
 
-router.get("/api/recipes/:user_id", (req, res) => {
-
+router.get("/api/recipes/user/:user_id", (req, res) => {
 
     //add filtering
     let filter = req.query.filter;

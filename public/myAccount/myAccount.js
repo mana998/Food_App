@@ -20,7 +20,7 @@ function generateRecipe(recipe, container){
 //get logged in user rcipes and add them to the page
 async function renderMyRecipes(container,filter = "") {
     const user_id = 6;
-    let fetchString = `/api/recipes/${user_id}?filter=${filter}`;
+    let fetchString = `/api/recipes/user/${user_id}?filter=${filter}`;
     const response = await fetch(fetchString);
     const result = await response.json();
   
