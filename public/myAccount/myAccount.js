@@ -3,10 +3,12 @@
 //function to create recipe container
 function generateRecipe(recipe, container){
     let imageCol = '';
+
     if (container == 'recipes-container'){
         imageCol = 'col-md-3'
     }else{
         imageCol = 'col-12'
+
     }
 
     return(  
@@ -34,10 +36,11 @@ function generateRecipe(recipe, container){
 async function updateModal(recipe_name){
     const response = await fetch(`/api/recipes/${recipe_name}`);
     const result = await response.json();
+
     $("#ingredientsArray").empty();
 
     $('#modalHeadder').text('Update recipe');
-    $('#recipeForm').append(`<input type="hidden" class="form-control  col-2" name="recipe_id" value="${result.recipe.id}">`)
+    $('#recipeId').attr("value", result.recipe.id);
     $('#recipe_name').attr("value", result.recipe.name);
     $('#recipe_description').val(result.recipe.description.replace(/^\s*\s/gm,''));
     
@@ -50,7 +53,7 @@ async function updateModal(recipe_name){
         $('#ingredientsArray').append(`
         <div id="box-${numberOfNextContainer}" class="row row-style">
         <input type="text" class="form-control  col-6" id="selected-ingredient-${numberOfNextContainer}" value="${ingredient.name}" disabled>
-            <input type="text" class="form-control  col-6" id="selected-ingredient-id-${numberOfNextContainer}" name="ingredients[ingredient${numberOfNextContainer}][id]" hidden>
+            <input type="text" class="form-control  col-6" id="selected-ingredient-id-${numberOfNextContainer}" name="ingredients[ingredient${numberOfNextContainer}][id]" hidden value="${ingredient.id}">
             <input type="number" class="form-control  col-3" name = "ingredients[ingredient${numberOfNextContainer}][amount]" id="ingredient-amount-${numberOfNextContainer}" value="${ingredient.amount}">
             <input type="text" class="form-control  col-2" id="input-${numberOfNextContainer}" disabled value="${ingredient.measure}">
             <p onclick="removeIngredientField('box-${numberOfNextContainer}')" id="add-ingredient"><b>-</b></p>
@@ -98,10 +101,7 @@ async function renderMyRecipes(container,filter = "") {
             $(".recipes").prepend(renderSortingPaging()).append(renderSortingPaging());
             $(`#${pageSort.filter}-${pageSort.direction}`).attr("selected", true);
         }
-        
-        if (container == 'favorite-recipes'){
-            $("#update-icon").css('display','none');
-        };
+              
     }else{
         window.location.replace('/');
     }
@@ -199,35 +199,36 @@ function setMeasure(measure, inputId, selectId, ingredient_id){
 //send form information to the server and dispaly return message
 
 $('#recipeForm').on('submit', submitForm);
-
 async function submitForm(e){
     e.preventDefault();
+    const user_id = await getLoginSession();
     let formData = new FormData(document.getElementById('recipeForm'));
+    formData.append('user_id', user_id)
     let response = '';
-    if ($('#modalHeadder').text == 'Update recipe'){
-        response = await fetch("/api/recipe/recipeAdd", {
-            method: 'post',
-            body: formData
+    console.log($('#modalHeadder').text());
+    if ($('#modalHeadder').text() == 'Add recipe'){
+        response = await fetch("/api/recipeAdd", {
+                method: 'post',
+                body: formData
             });
-    }else{
-        response = await fetch("/api/recipe/recipeUpdate", {
-        method: 'put',
-        body: formData
+    }else if ($('#modalHeadder').text() == 'Update recipe'){
+        response = await fetch("/api/recipeUpdate", {
+            method: 'put',
+            body: formData
         });
     }
     
-    const result = await response.json();
-    console.log(result.message);
+    let result = await response.json();
 
     if (result.message == "Image uploaded."){
         $('#your-recipes').empty();
         renderMyRecipes("your-recipes");
-        alert("Recipe added.");
         document.getElementById('recipeForm').reset();
         $('#img-response').text("");
     }else{
         $('#img-response').text(result.message);
     };
+    
      
 };
 
