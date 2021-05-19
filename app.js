@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const session = require("express-session");
 const fs = require('fs');
+const fetch = require("node-fetch");
 //const bcrypt = require("bcrypt");
 
 //get the connection to db so yuo can run queries, connection defined in folder database file connection.js
@@ -67,8 +68,12 @@ app.get("/myAccount/:user_id", (req, res) => {
     }
 });
 
+//store active sockets
+const sockets = {};
+
 //chat management
 io.on('connection', (socket) => { 
+
     socket.on("client send message", (data) => {
         //console.log(data);
         //send to everyone but sender
@@ -80,8 +85,27 @@ io.on('connection', (socket) => {
         //send to all
         io.emit("user list update", {message: "update"});
     })
+
+    socket.on("user connected", (data) => {
+        //store user id assigned to socket
+        sockets[socket] = data.id;
+    })
+
+    socket.on("disconnect", () => {
+        disconnect(socket);
+    })
 });
 
+async function disconnect(socket) {
+    //let fullURL =  req.protocol + '://' + req.get('host') + req.originalUrl;
+    let fetchString = `http://localhost:8080/api/logout/${sockets[socket]}`;
+    console.log(fetchString);
+    let response = await fetch(fetchString);
+    let result = await response.json();
+    
+    sockets[socket].delete;
+    console.log("disconnect");
+}
 
 server.listen(process.env.PORT || 8080, (error) => {
 
