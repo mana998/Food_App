@@ -91,20 +91,22 @@ io.on('connection', (socket) => {
         sockets[socket] = data.id;
     })
 
-    socket.on("disconnect", () => {
+    /*socket.on("disconnect", () => {
         disconnect(socket);
-    })
+    })*/
 });
 
 async function disconnect(socket) {
     //let fullURL =  req.protocol + '://' + req.get('host') + req.originalUrl;
-    let fetchString = `http://localhost:8080/api/logout/${sockets[socket]}`;
-    console.log(fetchString);
-    let response = await fetch(fetchString);
-    let result = await response.json();
-    
-    sockets[socket].delete;
-    console.log("disconnect");
+    let id = sockets[socket];
+    if (id) {
+        let fetchString = `http://localhost:8080/api/logout/${id}`;
+        let response = await fetch(fetchString);
+        let result = await response.json();
+        
+        sockets[socket].delete;
+        console.log("disconnect");
+    }
 }
 
 server.listen(process.env.PORT || 8080, (error) => {

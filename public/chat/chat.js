@@ -154,7 +154,7 @@ async function renderChat() {
         //setup socket
         socket.on(`server send message ${myId}`, (data) => {
             //console.log("received msg", data);
-            chats[id].messages.push(new Message(data.from, false, data.message));
+            chats[data.from].messages.push(new Message(data.from, false, data.message));
             //add message to chat
             renderMessage(data.from, false, data.message);
         });
