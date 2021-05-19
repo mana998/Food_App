@@ -17,54 +17,46 @@
         <div class="col-12 col-md-6">
       
             <h3 id="myRecipes" >My Recipes  
-                <img id="add-icon" src="./../global/icons/add.png" alt="add icon" data-toggle="modal" data-target="#addRecipe"></img>      
+                <img id="add-icon" src="./../global/icons/add.png" alt="add icon" data-toggle="modal" data-target="#recipeFormModalAdd"></img>      
             </h3>
 
-            <div class="modal fade" id="addRecipe" tabindex="-1" role="dialog" aria-labelledby="addRecipe" aria-hidden="true">
+            <div class="modal fade" id="recipeFormModalAdd" tabindex="-1" role="dialog" aria-labelledby="addRecipe" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Add recipe</h5>
+                      <h5 class="modal-title" id="modalHeadder">Add recipe</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addRecipeForm" method="POST" action="/api/addRecipe" >
+                        <form id="recipeForm" method="POST" enctype="multipart/form-data" action="/api/recipeAdd" >
                             <div class="form-group">
                               <label for="recipe_name">Recipe name</label>
-                              <input type="text" class="form-control" id="recipe_name" name="recipe_name" placeholder="Enter recipe name">
+                              <input type="text" class="form-control" id="recipe_name" name="recipe_name" required placeholder="Enter recipe name">
+                            </div>
+                            <div class="row row-style-label">
+                                <label for="recipe_ingredients">Ingredients</label>
+                                <p onclick="addIngredientField()" id="add-ingredient"><b>+</b></p>
                             </div>
                             <div id ="ingredientsArray" class="form-group">
-                                <div class="row row-style-label">
-                                    <label for="recipe_ingredients">Ingredients</label>
-                                    <p onclick="addIngredientField()" id="add-ingredient"><b>+</b></p>
-                                </div>
-                              
-                                <div class="row row-style" >
-                                    <select class="form-control col-6 ingredientsList" id="recipe_ingredients" placeholder="Enter ingredient">
-                                        
-                                    </select>
-                                    <input type="number" class="form-control  col-3" name = "ingredient_amount" id="recipe_ingredients" placeholder="Amount">
-                                    <select class="form-control  col-2" id="recipe_ingredients" placeholder="Choose measurement">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>    
-                                </div>
-                              
+ 
                             </div>
                             <div class="form-group">
                                 <label for="recipe_description">Description</label>
-                                <textarea type="text" class="form-control" id="recipe_description" name="recipe-description" placeholder="Enter description" rows="5" cols="30" required></textarea>
+                                <textarea type="text" class="form-control" id="recipe_description" required name="recipe_description" placeholder="Enter description" rows="5" cols="30" required></textarea>
+                            </div>
+                            <div class="form-group">
+                              <label for="recipe-image">Choose recipe picture</label>
+                              <input id="image-recipe" type="file" class="form-control-file"  name="image-recipe" required>
+                              <p id = "img-response"></p>
                             </div>
                         </form>
+
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button id="submit-button" type="submit" form="addRecipeForm" class="btn btn-primary">Submit</button>
+                      <button id="submit-button" type="submit" form="recipeForm" class="btn btn-primary">Submit</button>
                     </div>
                   </div>
                 </div>
@@ -77,5 +69,7 @@
         </div>
     </div>
 </div>
+
 <script src="/myAccount/myAccount.js"></script>
+
 

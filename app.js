@@ -12,6 +12,7 @@ const db = require("./database/connection").connection;
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+
 app.use(session({
     secret: 'keyboard cat', //will see later
     resave: false,
@@ -36,8 +37,7 @@ app.use(loginRouter.router);
 app.use(sessionRouter.router);
 app.use(recipeRouter.router);
 
-const homeRecipesRouter = require("./routes/homeRecipes.js");
-app.use(homeRecipesRouter.router);
+
 
 
 const header = fs.readFileSync(__dirname + '/public/header/header.html', 'utf8');
