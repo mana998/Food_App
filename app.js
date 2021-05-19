@@ -30,14 +30,14 @@ const chatRouter = require("./routes/chat.js");
 const loginRouter = require("./routes/login.js");
 const sessionRouter = require("./routes/session.js");
 const recipeRouter = require("./routes/recipe.js");
+const ingredientsRouter = require("./routes/ingredients.js");
 
 app.use(recipesRouter.router);
 app.use(chatRouter.router);
 app.use(loginRouter.router);
 app.use(sessionRouter.router);
 app.use(recipeRouter.router);
-
-
+app.use(ingredientsRouter.router);
 
 
 const header = fs.readFileSync(__dirname + '/public/header/header.html', 'utf8');
@@ -47,6 +47,7 @@ const recipe = fs.readFileSync(__dirname + '/public/recipe/recipe.html', 'utf8')
 const footer = fs.readFileSync(__dirname + '/public/footer/footer.html', 'utf8');
 const homepage = fs.readFileSync(__dirname + '/public/homepage/homepage.html', 'utf8');
 const myAccount = fs.readFileSync(__dirname + '/public/myAccount/myAccount.html', 'utf8');
+const fridge = fs.readFileSync(__dirname + '/public/fridge/fridge.html', 'utf8');
 
 app.get("/recipes", (req, res) => {
     res.send(header + chat + recipes + footer);
@@ -66,6 +67,10 @@ app.get("/myAccount/:user_id", (req, res) => {
     } else {
         res.send(header + chat + homepage + footer);
     }
+});
+
+app.get("/fridge", (req, res) => {
+    res.send(header + chat + fridge + footer);
 });
 
 //store active sockets
