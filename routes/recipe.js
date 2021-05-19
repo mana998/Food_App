@@ -7,9 +7,8 @@ const Recipe = require("./../models/Recipe").Recipe;
 const Ingredient = require("./../models/Ingredient").Ingredient; 
 
 router.get("/api/recipes/:recipe_name", (req, res) => {
-    
     //get recipe from db
-    db.query('SELECT * FROM recipe INNER JOIN ingredient_has_recipe ON recipe.recipe_id = ingredient_has_recipe.recipe_id INNER JOIN ingredient ON ingredient_has_recipe.ingredient_id = ingredient.ingredient_id INNER JOIN measurement ON ingredient.measurement_id = measurement.measurement_id WHERE recipe.recipe_name=?;',[req.params.recipe_name.toLowerCase()],
+    db.query('SELECT * FROM recipe INNER JOIN ingredient_has_recipe ON recipe.recipe_id = ingredient_has_recipe.recipe_id INNER JOIN ingredient ON ingredient_has_recipe.ingredient_id = ingredient.ingredient_id INNER JOIN measurement ON ingredient.measurement_id = measurement.measurement_id WHERE recipe.recipe_name=?;',[req.params.recipe_name],
     (error, result, fields) => {
 
         if (result.length != 0){
@@ -18,9 +17,9 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
             const ingredients = [];
             for (const ingredient in result){
 
-                ingredients.push(new Ingredient(result[ingredient].id,result[ingredient].ingredient_name, result[ingredient].measurement_name, result[ingredient].amount));
+                ingredients.push(new Ingredient(result[ingredient].ingredient_id,result[ingredient].ingredient_name, result[ingredient].measurement_name, result[ingredient].amount));
             };
-            const recipe = new Recipe(result[0].recipe_id, result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img );
+            const recipe = new Recipe(result[0].recipe_id, result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img, result[0].likes );
          
             res.send({
                         recipe: recipe,
@@ -35,7 +34,7 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
     }); 
 });
 
-router.get("/api/ingredients", (req, res) => {
+router.get("/api/recipe/ingredients", (req, res) => {
     
     //get ingredients from db
     db.query('SELECT * FROM ingredient INNER JOIN measurement ON ingredient.measurement_id = measurement.measurement_id;', (error, result, fields) => {
@@ -89,49 +88,60 @@ router.post("/api/recipeAdd", (req, res) => {
 
         //insert into recipe table
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
-        const user_id = 6;
 
-        db.query("INSERT INTO recipe (recipe_name, recipe_desc, user_id, recipe_img) VALUES (?, ?, ?, ?);",[req.body.recipe_name, req.body.recipe_description, user_id, recipe_img],
+        db.query("INSERT INTO recipe (recipe_name, recipe_desc, user_id, recipe_img) VALUES (?, ?, ?, ?);",[req.body.recipe_name, req.body.recipe_description, req.body.user_id, recipe_img],
             (error, result, fields) => {
             
                 if (error){
                     throw error;
                 }else{
+                    
                     const recipe_id = result.insertId;
 
-                   //retrive names of the ingredents and input them into db
-    
-                    let formObjectIngredients = req.body.ingredients;
-                    let ingredients = [];
-                
-                    for (key in formObjectIngredients){
-                        
-                        ingredients.push(formObjectIngredients[key]);
-                    }
-                    for (let i in ingredients){
-                        db.query("INSERT INTO ingredient_has_recipe VALUES (?,?,?);",[ingredients[i].id, recipe_id,ingredients[i].amount],
-                        (error, result, fields) => {
-                            if (error){
-                                throw error;
-                            }
-                        });
+                    if(recipe_id){
+                    
+                        let formObjectIngredients = req.body.ingredients;
+                        let ingredients = [];
 
-                    }                     
-                }
+                        for (key in formObjectIngredients){
+                            ingredients.push(formObjectIngredients[key]);
+                        }
+
+                        if (ingredients.length != 0){
+                            for (let i in ingredients){
+                                db.query("INSERT INTO ingredient_has_recipe VALUES (?,?,?);",[ingredients[i].id, recipe_id,ingredients[i].amount],
+                                (error, result, fields) => {
+                                    if (error){
+                                        throw error;
+                                    }else {
+                                        if (result.affectedRows === 0) {
+                                            res.send({message: "Something went wrong. Try again."});
+                                            return;
+                                        }
+                                    } 
+                                });
+                            } 
+                        }
+                    }
+                }                     
+            
         });
 
         if (err){
             res.send({
                 message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size.",
             });
+            return;
         }else {
             if(req.file == undefined){
                 res.send({
                 message: "No image selected."});
+                return;
             }else{
 
                 res.send({
                     message: "Image uploaded."});
+                return;
             }
             
             
@@ -142,103 +152,111 @@ router.post("/api/recipeAdd", (req, res) => {
 
 router.put("/api/recipeUpdate", (req, res) => {
 
-
     upload(req,res,(err) => {
 
-        //insert into recipe table
+        //delete previous file 
+        /*
+        db.query('SELECT recipe_img from recipe WHERE recipe.recipe_id = ?',[req.body.recipe_id],
+        (error, result, fields) => {
+            console.log(result);
+            if (error){
+                throw error;
+            }else{
+
+                const fs = require('fs')
+
+                const path = `./public/global/images/${result[0].recipe_img }.jpg`
+
+                fs.unlink(path, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+
+                })
+            }
+        });
+        */
+        
+
+        //update  recipe table
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
-        const user_id = 6;
+        db.query("UPDATE recipe SET recipe_name = ?, recipe_desc = ?, recipe_img = ? WHERE recipe.recipe_id = ?;",
+        [req.body.recipe_name, req.body.recipe_description, recipe_img, req.body.recipe_id],
+            (error, result, fields) => {
+                
+                if (error){
+                    throw error;
+                }else {
+                    if (result.affectedRows === 0) {
+                        res.send({message: "Something went wrong with updating. Try again."});
+                        return;
+                    }
+                } 
+        });  
+        //delete previous ingredients
+        db.query("DELETE FROM ingredient_has_recipe WHERE ingredient_has_recipe.recipe_id = ?;",
+        [req.body.recipe_id],(error, result, fields) => {
+            
+            if (error){
+                throw error;
+            }else {
+                if (result.affectedRows === 0) {
+                    res.send({message: "Something went wrong with updating ingredients. Try again."});
+                    return;
+                }
+            } 
+        });
 
+        //chceck if recipe has ingredients:
+        let formObjectIngredients = req.body.ingredients;
+        let ingredients = [];
+                
+        for (key in formObjectIngredients){            
+            ingredients.push(formObjectIngredients[key]);
+        }
+        if (ingredients.length !== 0){
 
-        let query = "UPDATE recipe SET recipe_name = ?, recipe_desc = ?, recipe_img = ? WHERE recipe.user_id = ?) VALUES (?, ?, ?, ?);";
-        let parameters = [req.body.recipe_name, req.body.recipe_description, recipe_img, user_id];
-
-        let query2 = "DELETE ingredient_has_recipe WHERE ingredient_has_recipe.recipe_id = ?;";
-        let parameters2 = [recipe_id];
-
-        let query3 = "INSERT INTO ingredient_has_recipe VALUES (?,?,?);";
-        let parameters3 = [ingredients[i].id, recipe_id,ingredients[i].amount];
-
-            //delete previous file
-            /*
-            db.query('SELECT recipe_img from recipe WHERE recipe.recipe_name = ?',[req.body.recipe_name],
+            //add new ingredients
+            for (let i in ingredients){
+                db.query("INSERT INTO ingredient_has_recipe VALUES (?,?,?);",[ingredients[i].id, req.body.recipe_id, ingredients[i].amount],
                 (error, result, fields) => {
                     if (error){
                         throw error;
-                    }else{
-
-                        const fs = require('fs')
-
-                        const path = `./${result[0].recipe_img }.jpg`
-
-                        fs.unlink(path, (err) => {
-                        if (err) {
-                            console.error(err)
-                            return
+                    }else {
+                        if (result.affectedRows === 0) {
+                            res.send({message: "Something went wrong with updating ingredients. Try again."});
+                            return;
                         }
-
-                        //file removed
-                        })
-                    }
+                    }    
                 });
-                */
-        
-
-        db.query(query,parameters,
-            (error, result, fields) => {
-            
-                if (error){
-                    throw error;
-                }else{
-                    const recipe_id = result.insertId;
-
-                   //retrive names of the ingredents and input them into db
-    
-                    let formObjectIngredients = req.body.ingredients;
-                    let ingredients = [];
-                
-                    for (key in formObjectIngredients){
-                        
-                        ingredients.push(formObjectIngredients[key]);
-                    }
-                    for (let i in ingredients){
-                        //deletes old ingredients list
-                        db.query(query2,parameters2,
-                        (error, result, fields) => {
-                            if (error){
-                                throw error;
-                            }
-                        });
-                        //inserts new ingrdients
-                        db.query(query3,parameters3,
-                            (error, result, fields) => {
-                                if (error){
-                                    throw error;
-                                }
-                        });
-                    }                     
-                }
-        });
+            }    
+        }       
 
         if (err){
             res.send({
-                message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size.",
+                message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size.",   
             });
+            return;
         }else {
             if(req.file == undefined){
                 res.send({
                 message: "No image selected."});
+                return;
             }else{
-
                 res.send({
                     message: "Image uploaded."});
-            }    
+                return;
+            }
+  
         }
     })
+
 })
+                   
 
 //adding to favorites
-router.post('/api/addToFavorite', (req,res) => {
+router.post('/api/recipe/addToFavorite', (req,res) => {
     const recipe_id = req.body.recipe_id;
     const user_id = req.body.user_id;
 
@@ -259,7 +277,7 @@ router.post('/api/addToFavorite', (req,res) => {
 });
 
 //delete from favorite
-router.delete('/api/deleteFromFavorite', (req,res) => {
+router.delete('/api/recipe/deleteFromFavorite', (req,res) => {
     const recipe_id = req.body.recipe_id;
     const user_id = req.body.user_id;
     console.log(recipe_id, user_id);

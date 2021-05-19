@@ -37,6 +37,21 @@
     color: #BA9291;
 }
 
+.icon{
+    max-width: 8%;
+    max-height: 8%;
+    cursor: pointer;
+    margin-left: 5%;
+    
+}
+.likes{
+    text-align: center;
+    color: #BA9291;
+    display: inline-block;
+    font-weight: normal;
+    font-size: 90%;
+}
+
 
 @media only screen and (max-width: 992px) {
     .ingredients-headder{
