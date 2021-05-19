@@ -24,6 +24,8 @@ async function login(){
                 await socket.emit("online users change");
                 $('#loginModal').modal('hide');
                 setLogoutHtml(result.id);
+                //let server know that user is logged in
+                socket.emit("user connected", ({id: result.id}));
             }
         }
     }
