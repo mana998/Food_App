@@ -1,0 +1,11 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+}
+
+.flex-item {
+    flex: 1 1 10em;
+    transition-duration: 0.3s;
+    flex-grow: 0;
+}
