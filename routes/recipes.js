@@ -12,7 +12,7 @@ router.get("/api/recipes", (req, res) => {
     let direction = req.query.direction || "desc";
 
     //needs to be in there as else it is putting it into quotes
-    let query = `SELECT recipe_name, recipe_img FROM recipe ORDER BY ${filter} ${direction} LIMIT ? OFFSET ?;`;
+    let query = `SELECT recipe_id, recipe_name, recipe_img, likes FROM recipe ORDER BY ${filter} ${direction} LIMIT ? OFFSET ?;`;
     values = [Number(size), Number((page - 1) * size)];
 
     db.query(query, values, (error, result, fields) => {
@@ -21,7 +21,7 @@ router.get("/api/recipes", (req, res) => {
             //write recipe to object
             const recipes = [];
             for (const recipe of result) {
-                recipes.push(new Recipe('', recipe.recipe_name,'', '', recipe.recipe_img));
+                recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,'', '', recipe.recipe_img, recipe.likes));
             }
             res.send({recipes});
         } else {
@@ -40,10 +40,10 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
     let values= "";
 
    if (filter == ""){
-        query = 'SELECT recipe_id, recipe_name, recipe_img FROM recipe WHERE recipe.user_id = ? ;';
+        query = 'SELECT recipe_id, recipe_name,recipe.recipe_desc, recipe_img, recipe.likes FROM recipe WHERE recipe.user_id = ? ;';
         values = [user_id];
    }else if (filter == "favorite"){
-        query = 'SELECT recipe.recipe_id, recipe.recipe_name, recipe.recipe_img FROM recipe INNER JOIN favorite ON recipe.recipe_id = favorite.recipe_id WHERE favorite.user_id = ?;';
+        query = 'SELECT recipe.recipe_id, recipe.recipe_name,recipe.recipe_desc, recipe.recipe_img, recipe.likes FROM recipe INNER JOIN favorite ON recipe.recipe_id = favorite.recipe_id WHERE favorite.user_id = ?;';
         values = [user_id];
    }else {
         res.send({message: "No recipes found"});
@@ -56,7 +56,7 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
             //write recipe to object
             const recipes = [];
             for (const recipe of result) {
-                recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,'', '', recipe.recipe_img));
+                recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,recipe.recipe_desc, '', recipe.recipe_img, recipe.likes));
             }
             res.send({recipes});
         } else {

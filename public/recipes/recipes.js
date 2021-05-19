@@ -1,12 +1,3 @@
-function generateRecipe(recipe){
-    return(
-    `<div class="flex-item">
-    <a class="recipe-link" href="/recipes/${recipe.name}">
-        <h2 class="recipe-name">${recipe.name}</h2>
-        <img class="recipe-img" src="./../global/images/${recipe.img}.jpg">
-    </a>
-</div>`);
-}
 
 const lengths = [5, 10, 25, 50, 100];
 
@@ -16,25 +7,6 @@ let pageSort = {
     filter: "likes",
     direction: "desc"
 }
-
-async function renderRecipes() {
-    let fetchString = `/api/recipes?size=${pageSort.size}&page=${pageSort.page}&filter=${pageSort.filter}&direction=${pageSort.direction}`;
-    const response = await fetch(fetchString);
-    const result = await response.json();
-    $(".flex-container").empty()
-    $(".recipes .sorting-paging-buttons").remove()
-    if (result.recipes && result.recipes.length) {
-        result.recipes.map(recipe => {
-            $(".flex-container").append(generateRecipe(recipe));
-        });
-    } else if (result.message) {
-        $(".flex-container").append(`<h2>${result.message}</h2>`);
-    } else {
-        $(".flex-container").append(`<h2>Something went wrong</h2>`);
-    }
-    $(".recipes").prepend(renderSortingPaging()).append(renderSortingPaging());
-    $(`#${pageSort.filter}-${pageSort.direction}`).attr("selected", true);
-};
 
 function renderSortingPaging() {
     let result = '<div class="sorting-paging-buttons">';
@@ -72,5 +44,5 @@ function renderSorting() {
 
 //render recipes automatically if on recipes page
 if (window.location.pathname.match("recipes")) {
-    renderRecipes();
+    renderMyRecipes('recipes-container');
 }

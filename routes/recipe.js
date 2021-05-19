@@ -20,7 +20,7 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
 
                 ingredients.push(new Ingredient(result[ingredient].id,result[ingredient].ingredient_name, result[ingredient].measurement_name, result[ingredient].amount));
             };
-            const recipe = new Recipe(result[0].recipe_id, result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img );
+            const recipe = new Recipe(result[0].recipe_id, result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img, result[0].likes );
          
             res.send({
                         recipe: recipe,
@@ -35,7 +35,7 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
     }); 
 });
 
-router.get("/api/ingredients", (req, res) => {
+router.get("/api/recipe/ingredients", (req, res) => {
     
     //get ingredients from db
     db.query('SELECT * FROM ingredient INNER JOIN measurement ON ingredient.measurement_id = measurement.measurement_id;', (error, result, fields) => {
@@ -83,8 +83,8 @@ const upload = multer({
     
 }).single('image-recipe');
 
-router.post("/api/recipeAdd", (req, res) => {
-
+router.post("/api/recipe/recipeAdd", (req, res) => {
+    console.log('here');
     upload(req,res,(err) => {
 
         //insert into recipe table
@@ -108,6 +108,7 @@ router.post("/api/recipeAdd", (req, res) => {
                         
                         ingredients.push(formObjectIngredients[key]);
                     }
+                    console.log(ingredients);
                     for (let i in ingredients){
                         db.query("INSERT INTO ingredient_has_recipe VALUES (?,?,?);",[ingredients[i].id, recipe_id,ingredients[i].amount],
                         (error, result, fields) => {
@@ -140,18 +141,18 @@ router.post("/api/recipeAdd", (req, res) => {
 
 })
 
-router.put("/api/recipeUpdate", (req, res) => {
+/*router.put("/api/recipe/recipeUpdate", (req, res) => {
 
 
     upload(req,res,(err) => {
 
         //insert into recipe table
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
-        const user_id = 6;
 
 
-        let query = "UPDATE recipe SET recipe_name = ?, recipe_desc = ?, recipe_img = ? WHERE recipe.user_id = ?) VALUES (?, ?, ?, ?);";
-        let parameters = [req.body.recipe_name, req.body.recipe_description, recipe_img, user_id];
+
+        let query = "UPDATE recipe SET recipe_name = ?, recipe_desc = ?, recipe_img = ? WHERE recipe.recipe_id = ?) VALUES (?, ?, ?, ?);";
+        let parameters = [req.body.recipe_name, req.body.recipe_description, recipe_img, req.body.recipe_id];
 
         let query2 = "DELETE ingredient_has_recipe WHERE ingredient_has_recipe.recipe_id = ?;";
         let parameters2 = [recipe_id];
@@ -184,7 +185,7 @@ router.put("/api/recipeUpdate", (req, res) => {
                 */
         
 
-        db.query(query,parameters,
+        /*db.query(query,parameters,
             (error, result, fields) => {
             
                 if (error){
@@ -235,10 +236,10 @@ router.put("/api/recipeUpdate", (req, res) => {
             }    
         }
     })
-})
+}) */
 
 //adding to favorites
-router.post('/api/addToFavorite', (req,res) => {
+router.post('/api/recipe/addToFavorite', (req,res) => {
     const recipe_id = req.body.recipe_id;
     const user_id = req.body.user_id;
 
@@ -259,7 +260,7 @@ router.post('/api/addToFavorite', (req,res) => {
 });
 
 //delete from favorite
-router.delete('/api/deleteFromFavorite', (req,res) => {
+router.delete('/api/recipe/deleteFromFavorite', (req,res) => {
     const recipe_id = req.body.recipe_id;
     const user_id = req.body.user_id;
     console.log(recipe_id, user_id);

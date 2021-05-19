@@ -1,13 +1,20 @@
-(async function renderRecipe() {
+async function renderRecipe() {
     let fetchRecipe = `/api${window.location.pathname}`;
     const response = await fetch(fetchRecipe);
     const result = await response.json();
-    console.log(result);
+    $(".flex-container").empty();
     if (result.message){
         $(".flex-container").append(`<h1 class="page-title" >${result.message}</h1>`);
     }
     
-    $(".flex-container").append(`<h1 class="page-title" >${result.recipe.name}</h1>`);
+    $(".flex-container").append(`
+    <div>
+        <h1 class="page-title" >${result.recipe.name}  
+        <img onclick="addOrDeleteFromFavorite(${result.recipe.id}, 'heart-icon-flex-container-${result.recipe.id}','flex-container')" id="heart-icon-flex-container-${result.recipe.id}" class="icon" src="./../global/icons/heart.png" alt="heart icon"></img>
+        <p class="likes">${result.recipe.likes}</p></h1>
+    </div>
+    `);
+    checkFavorite(result.recipe.id, 'flex-container');
 
     $(".flex-container").append(`
     <div id ="recipe-container" class="row">
@@ -38,4 +45,7 @@
     result.recipe.description.split(".").forEach(line => {
         $("#descripton").append(`<p>${line}.</p>`)})
 
-})();
+};
+$(document).ready(function(){ 
+    renderRecipe();
+});
