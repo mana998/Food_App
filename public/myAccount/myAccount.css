@@ -23,6 +23,11 @@
     border-color: #BA9291 !important;
 }
 
+.submit-ingredient-button{
+    background-color: #BA9291 !important;
+    border-color: #BA9291 !important;
+}
+
 #upload-button{
     background-color: #BA9291 !important;
     border-color: #BA9291 !important;
@@ -114,5 +119,14 @@
 }
 .row-style{
  
-    margin: 0% 0% 2% 0% !important;    
+    margin: 1% 0% 2% 0% !important;    
 }
+
+#new-ingredient-button{
+    background-color: #BA9291;
+    color: white;
+    position: absolute;
+    right: 3%;
+    
+}
+

@@ -43,7 +43,7 @@ router.get("/api/recipe/ingredients", (req, res) => {
             
             //write recipe to object
             const ingredients = [];
-            for (const ingredient in result){
+            for (let ingredient in result){
 
                 ingredients.push(new Ingredient(result[ingredient].ingredient_id,result[ingredient].ingredient_name, result[ingredient].measurement_name));
             }      
@@ -52,11 +52,54 @@ router.get("/api/recipe/ingredients", (req, res) => {
                     });
         }else{
             res.send({
-                message: "There is no ingredients."
+                message: "There are no ingredients."
             });
         }
     });  
 });
+
+const parseMulter = multer();
+
+router.post('/api/recipe/addIngredient', parseMulter.none(),(req,res) => {
+    db.query("INSERT INTO ingredient (ingredient_name, measurement_id) VALUES (?,?);",[req.body.ingredient_name, req.body.measure_id],
+    (error, result, fields) => {
+        if (error){
+            throw error;
+        }else {
+            if (result.affectedRows === 0) {
+                res.send({message: "Something went wrong. Try again."});
+                return;
+            }else{
+                res.send( {message: "Ingredient added."})
+            }
+        } 
+    });
+    
+})
+
+router.get('/api/recipe/measures', (req,res) => {
+    //get ingredients from db
+    db.query('SELECT * FROM measurement;', (error, result, fields) => {
+  
+        if (result.length != 0){
+            
+            
+            const measures = [];
+            for (let measure of result){
+
+                measures.push( {name : measure.measurement_name, id: measure.measurement_id} );
+            }      
+            res.send({
+                    measures: measures
+                });
+        }else{
+            res.send({
+                message: "There are no measures."
+            });
+        }
+    });  
+})
+
 
 //Code neccessary for uploading the images. multer, path def at the top of the page!
 
@@ -65,7 +108,6 @@ const storage = multer.diskStorage({
         cb(null, './public/global/images') //first arg is error, second destination
     },
     filename: (req, file, cb) => {
-        console.log(req.file)
         if (file.mimetype!=='image/jpg' && file.mimetype !=='image/jpeg') {
             let err = new Error();
             err.code = 'filetype';
@@ -82,7 +124,7 @@ const upload = multer({
     
 }).single('image-recipe');
 
-router.post("/api/recipeAdd", (req, res) => {
+router.post("/api/recipe/recipeAdd", (req, res) => {
 
     upload(req,res,(err) => {
 
@@ -150,37 +192,38 @@ router.post("/api/recipeAdd", (req, res) => {
 
 })
 
-router.put("/api/recipeUpdate", (req, res) => {
+router.put("/api/recipe/recipeUpdate", (req, res) => {
 
     upload(req,res,(err) => {
+        const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
 
-        //delete previous file 
-        /*
+        //deletes unused images
+        
         db.query('SELECT recipe_img from recipe WHERE recipe.recipe_id = ?',[req.body.recipe_id],
         (error, result, fields) => {
-            console.log(result);
             if (error){
                 throw error;
             }else{
+                if (result[0].recipe_img != recipe_img){
+                    const fs = require('fs')
 
-                const fs = require('fs')
-
-                const path = `./public/global/images/${result[0].recipe_img }.jpg`
-
-                fs.unlink(path, (err) => {
-                if (err) {
-                    console.error(err)
-                    return
+                    const path = `./public/global/images/${result[0].recipe_img }.jpg`
+                    console.log(result[0].recipe_img);
+                    fs.unlink(path, (err) => {
+                        if (err) {
+                            console.error(err)
+                            return
+                        }
+                    });
                 }
-
-                })
+                               
             }
         });
-        */
+        
         
 
         //update  recipe table
-        const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
+
         db.query("UPDATE recipe SET recipe_name = ?, recipe_desc = ?, recipe_img = ? WHERE recipe.recipe_id = ?;",
         [req.body.recipe_name, req.body.recipe_description, recipe_img, req.body.recipe_id],
             (error, result, fields) => {

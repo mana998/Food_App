@@ -38,10 +38,10 @@ async function updateModal(recipe_name){
     const result = await response.json();
 
     $("#ingredientsArray").empty();
-
+    $('#img-response').text('');
     $('#modalHeadder').text('Update recipe');
     $('#recipeId').attr("value", result.recipe.id);
-    $('#recipe_name').attr("value", result.recipe.name);
+    $('#recipe_name').val(result.recipe.name);
     $('#recipe_description').val(result.recipe.description.replace(/^\s*\s/gm,''));
     
     result.ingredients.map(ingredient => {
@@ -66,9 +66,11 @@ async function updateModal(recipe_name){
 function addModal(){
 
     $("#ingredientsArray").empty();
-    $('#recipe_name').attr("value", '');
     $('#recipe_description').val('');
     $('#modalHeadder').text('Add recipe');
+    $('#img-response').text('');
+    $("#image-recipe").val('');
+    $("#recipe_name").val('');
 
 }
 
@@ -91,6 +93,8 @@ async function renderMyRecipes(container,filter = "") {
             result.recipes.map(recipe => {
                 $(`#${container}`).append(generateRecipe(recipe,container));
                 checkFavorite(recipe.id, container);
+                $(`#update-icon-favorite-recipes-${recipe.id}`).css('display','none');
+                $(`#update-icon-recipes-container-${recipe.id}`).css('display','none');
             });
         } else if (result.message) {
             $(`#${container}`).append(`<h2>${result.message}</h2>`);
@@ -100,6 +104,7 @@ async function renderMyRecipes(container,filter = "") {
         if (container == 'recipes-container'){
             $(".recipes").prepend(renderSortingPaging()).append(renderSortingPaging());
             $(`#${pageSort.filter}-${pageSort.direction}`).attr("selected", true);
+            
         }
               
     }else{
@@ -195,6 +200,36 @@ function setMeasure(measure, inputId, selectId, ingredient_id){
     $(`#${inputId}`).attr("value", measure);
     $(`#${selectId}`).attr("value", ingredient_id);
 }
+$('#ingredientForm').on('submit', addNewIngredient);
+async function addNewIngredient(e){
+    e.preventDefault();
+    let form = document.getElementById('ingredientForm');
+    let ingredientForm = new FormData(form);
+    const response = await fetch(`/api/recipe/addIngredient`, {
+        method: 'post',
+        body: ingredientForm
+    });
+    const result = await response.json();
+    $('#ingredient-message').text(result.message);
+};
+
+(async function loadMeasures(){
+    let fetchString = `/api/recipe/measures`;
+    const response = await fetch(fetchString);
+    const result = await response.json(); 
+    if (result.message){
+        $('#ingredient-message').text(result.message);
+    }
+    result.measures.map( measure => {
+        $('#ingredient_measure').append(`
+        <option onclick = setMeasureId(${measure.id})>${measure.name}</option>
+    `);
+    }) 
+
+})();
+function setMeasureId(measureId){
+    $('#measureId').attr('value', measureId);
+}
 
 //send form information to the server and dispaly return message
 
@@ -205,14 +240,13 @@ async function submitForm(e){
     let formData = new FormData(document.getElementById('recipeForm'));
     formData.append('user_id', user_id)
     let response = '';
-    console.log($('#modalHeadder').text());
     if ($('#modalHeadder').text() == 'Add recipe'){
-        response = await fetch("/api/recipeAdd", {
+        response = await fetch("/api/recipe/recipeAdd", {
                 method: 'post',
                 body: formData
             });
     }else if ($('#modalHeadder').text() == 'Update recipe'){
-        response = await fetch("/api/recipeUpdate", {
+        response = await fetch("/api/recipe/recipeUpdate", {
             method: 'put',
             body: formData
         });
@@ -223,8 +257,10 @@ async function submitForm(e){
     if (result.message == "Image uploaded."){
         $('#your-recipes').empty();
         renderMyRecipes("your-recipes");
-        document.getElementById('recipeForm').reset();
-        $('#img-response').text("");
+        $('#favorite-recipes').empty();
+        renderMyRecipes("favorite-recipes","favorite");
+
+        $('#img-response').text(result.message);
     }else{
         $('#img-response').text(result.message);
     };

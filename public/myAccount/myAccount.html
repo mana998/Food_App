@@ -30,7 +30,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                        <form id="recipeForm" method="POST" enctype="multipart/form-data" action="/api/recipeAdd" >
+                        <form id="recipeForm" method="POST" enctype="multipart/form-data" action="/api/recipe/recipeAdd" >
                             <div class="form-group">
                               <label for="recipe_name">Recipe name</label>
                               <input type="text" class="form-control" id="recipe_name" name="recipe_name" required placeholder="Enter recipe name">
@@ -38,6 +38,7 @@
                             <div class="row row-style-label">
                                 <label for="recipe_ingredients">Ingredients</label>
                                 <p onclick="addIngredientField()" id="add-ingredient"><b>+</b></p>
+                                <button id ="new-ingredient-button" class="btn" data-toggle="modal" data-target="#ingredientModal">Add new ingredient</button>     
                             </div>
                             <div id ="ingredientsArray" class="form-group">
  
@@ -61,6 +62,36 @@
                     </div>
                   </div>
                 </div>
+            </div>
+
+            <!-- modal for ingredient add-->
+            <div class="modal" tabindex="-1"  id="ingredientModal" role="dialog" aria-labelledby="addIngredient" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Add new ingredient</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="ingredientForm" enctype="multipart/form-data" method="POST" action='/api/recipe/addIngredient' >
+                      <div class="form-group">
+                        <label for="ingredient_name">Ingredient name</label>
+                        <input type="text" class="form-control" id="ingredient_name" name="ingredient_name" required placeholder="Enter ingredient name">
+                        <label for="ingredient_measure">Ingredient measure</label>
+                        <select class="form-control" id="ingredient_measure" required placeholder="Choose ingredient measure"></select>
+                        <input id='measureId' type="number" class="form-control  col-2 " name="measure_id" value="" hidden>
+                        <p id ="ingredient-message"></p>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary submit-ingredient-button" form="ingredientForm">Save ingredient</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div id="your-recipes">
