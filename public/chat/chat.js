@@ -24,6 +24,9 @@ let toggle = true;
 
 let myId;
 
+//whether chat has already been rendered
+let rendered = false;
+
 //show or hide chat window
 function toggleChat(id) {
     //console.log("toggleChat");
@@ -112,8 +115,7 @@ function sendMessage(id) {
     socket.emit("client send message", { to: id, from: myId , message : message})
 };
 
-//??
-socket.on("user list upadte", (data) => {
+socket.on("user list update", (data) => {
     //console.log("update");
     renderChat();
 })
@@ -142,6 +144,7 @@ function openChat(user) {
 async function renderChat() {
     //console.log("renderChat()");
     let response = await getSession();
+    //console.log("response", response);
     if (response && response.length) {
         myId = response[0];
         chats = response[1] || {};
@@ -150,25 +153,32 @@ async function renderChat() {
     //console.log("myId", myId);
     //console.log("chats", chats);
     //console.log("openChats", openChats);
+    //console.log("myId", myId);
     if (myId) {
-        //setup socket
-        socket.on(`server send message ${myId}`, (data) => {
-            //console.log("received msg", data);
-            chats[data.from].messages.push(new Message(data.from, false, data.message));
-            //add message to chat
-            renderMessage(data.from, false, data.message);
-        });
+        if (!rendered) {
+            //let server know that user is logged in
+            //socket.emit("user connected", ({id: myId}));
+            rendered = true;
+            //setup socket
+            socket.on(`server send message ${myId}`, (data) => {
+                //console.log("received msg", data);
+                chats[data.from].messages.push(new Message(data.from, false, data.message));
+                //add message to chat
+                renderMessage(data.from, false, data.message);
+            });
+        }
         //get only username and id except user with specified id
         let fetchString = `/api/chat?id=${myId}`;
         const response = await fetch(fetchString);
         const result = await response.json();
+        $(".chat-container .user-chat").remove();
+        $(".chat-container .no-users").remove();
         if (result.users && result.users.length) {
-            $(".chat-container .user-chat").remove();
             result.users.map(user => {
                 $(".chat-container").append(generateUser(user));
             });
         } else {
-            $(".chat-container").append("<h2>No users found</h2>");
+            $(".chat-container").append("<p class="no-users">No users found</p>");
         }
     }
     if (openChats && openChats.length) {
