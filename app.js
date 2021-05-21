@@ -69,7 +69,7 @@ app.get("/myAccount/:user_id", (req, res) => {
 });
 
 //store active sockets
-const sockets = {};
+//const sockets = {};
 
 //chat management
 io.on('connection', (socket) => { 
@@ -88,23 +88,29 @@ io.on('connection', (socket) => {
 
     socket.on("user connected", (data) => {
         //store user id assigned to socket
-        sockets[socket] = data.id;
+        //console.log("socket id", socket.id);
+        //sockets[socket.id] = data.id;
+        //console.log("connect", sockets);
     })
 
-    socket.on("disconnect", () => {
+    /*socket.on("disconnect", () => {
         disconnect(socket);
-    })
+        io.emit("user list update", {message: "update"});
+    })*/
 });
 
-async function disconnect(socket) {
-    //let fullURL =  req.protocol + '://' + req.get('host') + req.originalUrl;
-    let fetchString = `http://localhost:8080/api/logout/${sockets[socket]}`;
-    console.log(fetchString);
-    let response = await fetch(fetchString);
-    let result = await response.json();
-    if (sockets[socket]) sockets[socket].delete;
-    console.log("disconnect", result);
-}
+/*async function disconnect(socket) {
+    console.log("disconnect", sockets);
+    if (sockets[socket.id]) {
+        //let fullURL =  req.protocol + '://' + req.get('host') + req.originalUrl;
+        let fetchString = `http://localhost:8080/api/logout/${sockets[socket.id]}`;
+        console.log(fetchString);
+        let response = await fetch(fetchString);
+        let result = await response.json();
+        sockets[socket.id].delete;
+        console.log("disconnect", result);
+    }
+}*/
 
 server.listen(process.env.PORT || 8080, (error) => {
 

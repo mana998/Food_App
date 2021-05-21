@@ -144,7 +144,7 @@ function openChat(user) {
 async function renderChat() {
     //console.log("renderChat()");
     let response = await getSession();
-    console.log("response", response);
+    //console.log("response", response);
     if (response && response.length) {
         myId = response[0];
         chats = response[1] || {};
@@ -153,9 +153,11 @@ async function renderChat() {
     //console.log("myId", myId);
     //console.log("chats", chats);
     //console.log("openChats", openChats);
-    console.log("myId", myId);
+    //console.log("myId", myId);
     if (myId) {
         if (!rendered) {
+            //let server know that user is logged in
+            //socket.emit("user connected", ({id: myId}));
             rendered = true;
             //setup socket
             socket.on(`server send message ${myId}`, (data) => {
@@ -175,7 +177,7 @@ async function renderChat() {
                 $(".chat-container").append(generateUser(user));
             });
         } else {
-            $(append).append("<h2>No users found</h2>");
+            $(".chat-container").append("<h2>No users found</h2>");
         }
     }
     if (openChats && openChats.length) {
