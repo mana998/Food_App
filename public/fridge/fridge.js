@@ -1,8 +1,8 @@
 function generateIngredient(ingredient){
     return(
-    `<div class="flex-item">
+    `<div class="col-12 col-sm-6 col-md-4 col-lg-3">
         <label for="${ingredient.name}">${ingredient.name}</label>
-        <input type="checkbox" onClick="this.value=${ingredient.id}" id="${ingredient.name}" name="${ingredient.name}" value="${ingredient.id}">
+        <input class="checkbox-style" type="checkbox" onClick="this.value=${ingredient.id}" id="${ingredient.name}" name="${ingredient.name}" value="${ingredient.id}">
     </div`);
 }
 
@@ -11,12 +11,12 @@ async function renderIngredients() {
     const response = await fetch(fetchString);
     const result = await response.json();
     console.log(result);
-    $(".flex-container").empty()
+    $(".ingredients").empty()
     if (result.ingredients && result.ingredients.length) {
         result.ingredients.map(ingredient => {
             $(".ingredients").append(generateIngredient(ingredient));
         });
-        $(".ingredients").append(`<br><button type="submit">SEARCH</button>`);
+        $(".ingredients").append(`<div class="col-12" ><button class=" btn search-button" type="submit">SEARCH</button></div>`);
     } else if (result.message) {
         $(".ingredients").append(`<h2>${result.message}</h2>`);
     } else {
@@ -45,3 +45,21 @@ async function findRecipes(e){
 
 //render recipes automatically if on recipes page
 renderIngredients();
+
+$(document).ready(function(){
+
+    $("#ingredient-head").click(function(){
+        $("#ingredients-form").toggle(500, function(){
+            
+        });
+
+        let active =  $("#spread-icon").attr("src");
+        if (active == "./../global/icons/hide.png"){
+            $("#spread-icon").attr("src","./../global/icons/spread.png");
+        }
+        else{
+        $("#spread-icon").attr("src","./../global/icons/hide.png");
+        }
+    });
+
+});

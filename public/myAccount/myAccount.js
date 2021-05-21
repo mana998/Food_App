@@ -128,12 +128,12 @@ $(document).ready(function(){
             
         });
 
-        let active =  $("#add-icon").attr("src");
+        let active =  $("#spread-icon").attr("src");
         if (active == "./../global/icons/hide.png"){
-            $("#add-icon").attr("src","./../global/icons/spread.png");
+            $("#spread-icon").attr("src","./../global/icons/spread.png");
         }
         else{
-        $("#add-icon").attr("src","./../global/icons/hide.png");
+        $("#spread-icon").attr("src","./../global/icons/hide.png");
         }
     });
 

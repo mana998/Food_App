@@ -1,11 +1,27 @@
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 2em;
+.fridge-page{
+    padding: 3% 10% 0% 10%;
+  
+}
+.page-title{
+    border-bottom: 1px solid black;
+    padding-bottom: 2%;
+    font-weight: bold;
+    color: #BA9291;
+}
+.checkbox-style{
+    float :right;
+}
+.search-button{
+    margin-top: 3% 0%;
+    border: 2px solid #BA9291;
 }
 
-.flex-item {
-    flex: 1 1 10em;
-    transition-duration: 0.3s;
-    flex-grow: 0;
+#recipes{
+    margin-top: 3%;
+}
+.icon{
+    max-width: 5%;
+    max-height: 5%;
+    cursor: pointer;
+    margin-left: 5%; 
 }
