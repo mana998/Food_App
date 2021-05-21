@@ -205,6 +205,7 @@ async function addNewIngredient(e){
     e.preventDefault();
     let form = document.getElementById('ingredientForm');
     let ingredientForm = new FormData(form);
+    ingredientForm.append("measure_id", ($('#ingredientForm option:selected').val()));
     const response = await fetch(`/api/recipe/addIngredient`, {
         method: 'post',
         body: ingredientForm
@@ -222,14 +223,11 @@ async function addNewIngredient(e){
     }
     result.measures.map( measure => {
         $('#ingredient_measure').append(`
-        <option onclick = setMeasureId(${measure.id})>${measure.name}</option>
+        <option value="${measure.id}">${measure.name}</option>
     `);
     }) 
 
 })();
-function setMeasureId(measureId){
-    $('#measureId').attr('value', measureId);
-}
 
 //send form information to the server and dispaly return message
 
