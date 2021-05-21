@@ -24,11 +24,7 @@ async function renderIngredients() {
         result.ingredients.map(ingredient => {
             $(".ingredients").append(generateIngredient(ingredient));
         });
-<<<<<<< HEAD
         $(".ingredients").append(`<br><button type="submit">SEARCH</button>`);
-=======
-        $(".ingredients").append(`<br><button onClick="findRecipes();">SEARCH</button>`);
->>>>>>> c2d5b3d3686d4d2f6ada4ff20c91026738b4be45
     } else if (result.message) {
         $(".ingredients").append(`<h2>${result.message}</h2>`);
     } else {
