@@ -2,12 +2,20 @@ function generateIngredient(ingredient){
     return(
     `<div class="flex-item">
         <label for="${ingredient.name}">${ingredient.name}</label>
+<<<<<<< HEAD
         <input type="checkbox" onClick="this.value=${ingredient.id}" id="${ingredient.name}" name="${ingredient.name}" value="${ingredient.id}">
+=======
+        <input type="checkbox" id="${ingredient.name}" name="${ingredient.name}" value="${ingredient.id}">
+>>>>>>> c2d5b3d3686d4d2f6ada4ff20c91026738b4be45
     </div`);
 }
 
 async function renderIngredients() {
+<<<<<<< HEAD
     let fetchString = `/api/ingredients`;
+=======
+    let fetchString = `/api2/ingredients`;
+>>>>>>> c2d5b3d3686d4d2f6ada4ff20c91026738b4be45
     const response = await fetch(fetchString);
     const result = await response.json();
     console.log(result);
@@ -16,7 +24,11 @@ async function renderIngredients() {
         result.ingredients.map(ingredient => {
             $(".ingredients").append(generateIngredient(ingredient));
         });
+<<<<<<< HEAD
         $(".ingredients").append(`<br><button type="submit">SEARCH</button>`);
+=======
+        $(".ingredients").append(`<br><button onClick="findRecipes();">SEARCH</button>`);
+>>>>>>> c2d5b3d3686d4d2f6ada4ff20c91026738b4be45
     } else if (result.message) {
         $(".ingredients").append(`<h2>${result.message}</h2>`);
     } else {
