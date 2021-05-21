@@ -61,20 +61,41 @@ router.get("/api/recipe/ingredients", (req, res) => {
 const parseMulter = multer();
 
 router.post('/api/recipe/addIngredient', parseMulter.none(),(req,res) => {
-    db.query("INSERT INTO ingredient (ingredient_name, measurement_id) VALUES (?,?);",[req.body.ingredient_name, req.body.measure_id],
-    (error, result, fields) => {
-        if (error){
-            throw error;
-        }else {
-            if (result.affectedRows === 0) {
-                res.send({message: "Something went wrong. Try again."});
-                return;
-            }else{
-                res.send( {message: "Ingredient added."})
+    let exists = 0;
+    db.query('SELECT * FROM ingredient;', (error, result, fields) => {
+  
+        if (result.length != 0){
+
+            for (let ingredient of result){
+
+                if (ingredient.ingredient_name === req.body.ingredient_name){
+
+                    exists = 1;
+                    res.send({
+                        message: "Ingredient already exists."
+                            });
+                    break;
+                }    
+            } 
+            if (!exists){
+                console.log('here')
+                db.query("INSERT INTO ingredient (ingredient_name, measurement_id) VALUES (?,?);",[req.body.ingredient_name, req.body.measure_id],
+                (error, result, fields) => {
+                    if (error){
+                        throw error;
+                    }else {
+                        if (result.affectedRows === 0) {
+                            res.send({message: "Something went wrong. Try again."});
+                            return;
+                        }else{
+                            res.send( {message: "Ingredient added."})
+                        }
+                    } 
+                });
             }
-        } 
-    });
-    
+        }
+    }); 
+           
 })
 
 router.get('/api/recipe/measures', (req,res) => {

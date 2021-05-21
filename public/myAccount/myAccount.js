@@ -212,6 +212,7 @@ async function addNewIngredient(e){
     });
     const result = await response.json();
     $('#ingredient-message').text(result.message);
+    $('#ingredientForm').reset();
 };
 
 (async function loadMeasures(){
