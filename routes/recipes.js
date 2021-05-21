@@ -95,22 +95,13 @@ router.get("/api/recipes/ingredients", (req, res) => {
     //query = "(SELECT t0.recipe_id, recipe_name, recipe_img, likes FROM ( SELECT recipe.recipe_id, recipe_name, recipe_img, likes, ingredient_has_recipe.ingredient_id  FROM recipe INNER JOIN ingredient_has_recipe ON recipe.recipe_id = ingredient_has_recipe.recipe_id WHERE ingredient_id = ? GROUP BY recipe_id) AS t0 INNER JOIN ingredient_has_recipe ON t0.recipe_id = ingredient_has_recipe.recipe_id WHERE ingredient_has_recipe.ingredient_id = ? GROUP BY recipe_id) AS t0";
     console.log("\nnq", query);
     let regex = /^\(?(.*)/;
-    //console.log("regex",regex)
-    //let newquery = query.replace("^\(?(.*)(\) AS t(\d)+)?$", '$1;')
-    //console.log("test", query.match(regex));
     query = query.replace(regex, '$1')
-    console.log("\nnq", query);
     regex = /^(.+?)(\) AS t(\d)+ )?$/;
     query = query.replace(regex, '$1;')
     //let regex = /^\(*+(.+?)(\) AS t(\d)+ )?$/;
     //query = query.replace(regex, '$1;')
-    console.log("\nnq", query);
-    //console.log(values);
     //needs to be in there as else it is putting it into quotes
-    //let query = `SELECT recipe_id, recipe_name, recipe_img, likes FROM recipe INNER JOIN ingredient_has_recipe WHERE ingredient_id = ? ;`;
-    //let values = [...req.query.ingredients]
     db.query(query, values, (error, result, fields) => {
-        console.log("result", result);
         if (result && result.length) {
             //write recipe to object
             const recipes = [];
