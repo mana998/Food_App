@@ -47,7 +47,7 @@ router.get("/api/logout/:id", (req, res) => {
 
 function updateActive(id, active, res) {
     db.query('UPDATE user SET active=? WHERE user_id=?;',[active, id], (error, result, fields) => {
-        if (result.changedRows !==1) {
+        if (!result || result.changedRows !==1) {
             //console.log("false");
             res.send({message: "Something went wrong. Try again."});
             //return false

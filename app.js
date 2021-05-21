@@ -102,9 +102,8 @@ async function disconnect(socket) {
     console.log(fetchString);
     let response = await fetch(fetchString);
     let result = await response.json();
-    
-    sockets[socket].delete;
-    console.log("disconnect");
+    if (sockets[socket]) sockets[socket].delete;
+    console.log("disconnect", result);
 }
 
 server.listen(process.env.PORT || 8080, (error) => {
