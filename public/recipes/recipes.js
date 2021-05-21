@@ -26,15 +26,15 @@ function renderSortingPaging() {
 
 
 function renderPageButton(symbol, value) {
-    return `<button class="page" onClick="pageSort.page += ${value}; renderRecipes();">${symbol}</button>`
+    return `<button class="page btn" onClick="pageSort.page += ${value}; renderRecipes();">${symbol}</button>`
 }
 
 function renderLengthButton(value) {
-    return `<button class="size" onClick="pageSort.size = ${value}; renderRecipes();">${value}</button>`
+    return `<button class="size btn" onClick="pageSort.size = ${value}; renderRecipes();">${value}</button>`
 }
 
 function renderSorting() {
-    return `<select class="sort-dropdown" onChange = "pageSort.filter = value.split('-')[0]; pageSort.direction = value.split('-')[1]; renderRecipes();">  
+    return `<select class="sort-dropdown form-control " onChange = "pageSort.filter = value.split('-')[0]; pageSort.direction = value.split('-')[1]; renderRecipes();">  
         <option value = 'recipe_id-desc' id = 'recipe_id-desc'>Newest to Oldest</option> 
         <option value = 'recipe_id-asc' id = 'recipe_id-asc'>Oldest to Newest</option> 
         <option value = 'likes-desc' id = 'likes-desc'>Most popular</option> 

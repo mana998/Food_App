@@ -30,3 +30,21 @@
 #update-icon{
     display: none;
 }
+.recipes-page{
+    padding: 3% 10% 0% 10%;
+  
+}
+.page-title{
+    border-bottom: 1px solid black;
+    padding-bottom: 2%;
+    font-weight: bold;
+    color: #BA9291;
+}
+
+.size, .page{
+    border: 1px solid #BA9291;
+}
+.sort-dropdown{
+    width: 25%;
+    display: inline-block;
+}
