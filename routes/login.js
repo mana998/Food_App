@@ -42,6 +42,7 @@ router.get("/api/login/:id", (req, res) => {
 })
 
 router.get("/api/logout/:id", (req, res) => {
+    console.log('here');
     updateActive(req.params.id, 0, res);
 })
 

@@ -171,13 +171,14 @@ async function renderChat() {
         let fetchString = `/api/chat?id=${myId}`;
         const response = await fetch(fetchString);
         const result = await response.json();
+        $(".chat-container .user-chat").remove();
+        $(".chat-container .no-users").remove();
         if (result.users && result.users.length) {
-            $(".chat-container .user-chat").remove();
             result.users.map(user => {
                 $(".chat-container").append(generateUser(user));
             });
         } else {
-            $(".chat-container").append("<h2>No users found</h2>");
+            $(".chat-container").append("<p class="no-users">No users found</p>");
         }
     }
     if (openChats && openChats.length) {

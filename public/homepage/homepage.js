@@ -1,6 +1,6 @@
 (async function renderHomepageRecipes() {
 
-    let fetchRecipe = `/api/recipes?size=6`;
+    let fetchRecipe = `/api/recipes?size=9`;
     const response = await fetch(fetchRecipe);
     const result = await response.json();
   
