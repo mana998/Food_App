@@ -35,11 +35,11 @@ async function findRecipes(e){
     const response = await fetch(fetchString)
     const result = await response.json();
     if (result && result.message) {
-        $('#recipes').text(result.message);
+        $('#recipes-container').text(result.message);
     } else {
         console.log(result.recipes);
-        $('#recipes').empty();
-        result.recipes.map(recipe => $('#recipes').append(generateRecipe(recipe, 'recipes')))
+        $('#recipes-container').empty();
+        result.recipes.map(recipe => $('#recipes-container').append(generateRecipe(recipe, 'recipes-container')))
     }
 };
 
