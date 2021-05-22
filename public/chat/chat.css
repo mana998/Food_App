@@ -6,17 +6,17 @@
     bottom: 0%;
     cursor: pointer;
     background-color: #ffffff;
-    border: 1px solid #f8f8f8;
+    border: 1px solid #BA9291;
     box-shadow: -0.1em 0.5em 0.5em #f8f8f8;
     z-index: 2;
     max-height: 40em;
-    overflow-y: scroll;
+    overflow-y : auto;
 }
 
 .user-chat-item {
     float: right;
     width: 15em;
-    border: 1px solid #f8f8f8;
+    border: 1px solid #9e7f7e;
     background-color: white;
     bottom: 0;
     position: fixed;
@@ -24,12 +24,15 @@
 }
 
 .control-bar-user {
-    padding: 0.25 1em;
+    padding: 0.25em 1em;
     background-color: #f8f8f8;
+    background-color: #ba9291
 }
 
 .user-messages {
     height: 15em;
+    padding: 0.5em;
+    overflow-y : auto;
 }
 
 .user-item {
@@ -48,27 +51,69 @@
     text-align: left;
     margin-block-start: 0em;
     margin-block-end: 0em;
-    padding: 1em;
+    padding: 0.5em;
+}
+
+.user-name {
+    border-bottom: 1px solid #ba92911c;
 }
 
 .control-bar {
-    padding: 0.25 1em;
-    background-color: #f8f8f8;
+    padding: 0.29em 1em;
+    background-color: #ba9291
 }
 
 .user-message {
-    width: 75%;
     display: inline-block;
     border-radius: 0.5em;
+    padding: 0.25em 0.5em;
+    width: fit-content;
+    margin-block-start: 0;
+    margin-block-end: 0.25em;
 }
 
 .left {
     float: left;
     background-color: #f8f8f8;
+    margin-right: 100%;
 }
 
 .right {
     float: right;
-    /*placeholder color*/
-    background-color: aquamarine;
+    background-color: #BA9291;
+    margin-left: 100%;
+}
+
+.close-chat {
+    float:right;
+    outline: none;
+    border: none;
+    background: none;
+    color:rgb(56, 56, 56);
+}
+
+.close-chat:hover {
+    color:rgb(153, 153, 153);
+}
+
+.chat-input {
+    width: 70%;
+    border: 1px solid #BA9291;
+    outline-color: #BA9291;
+    background-color: #f3f3f3;
+    margin-left: 0.25em;
+    margin-bottom: 0.5em;
+}
+
+.chat-send {
+    width: 23%;
+    background-color: #BA9291;
+    outline: none;
+    border: none;
+    color: white;
+}
+
+.chat-send:active:hover{
+    outline: none;
+    border: none;
 }
