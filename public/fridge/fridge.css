@@ -25,3 +25,7 @@
     cursor: pointer;
     margin-left: 5%; 
 }
+
+.account-recipe-item {
+    margin: 3%;
+}
