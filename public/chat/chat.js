@@ -103,16 +103,18 @@ function generateUserChat(user, index) {
 
 function sendMessage(id) {
     let message = document.getElementById(`message${id}`).value;
-    //empty the box
-    document.getElementById(`message${id}`).value = '';
-    //console.log("sent msg");
-    //console.log(message);
-    //add your message to chat
-    renderMessage(id, true, message);
-    chats[id].messages.push(new Message(id, true, message));
-    //console.log("messaaage",chats);
-    //send message
-    socket.emit("client send message", { to: id, from: myId , message : message})
+    if (message) {
+        //empty the box
+        document.getElementById(`message${id}`).value = '';
+        //console.log("sent msg");
+        //console.log(message);
+        //add your message to chat
+        renderMessage(id, true, message);
+        chats[id].messages.push(new Message(id, true, message));
+        //console.log("messaaage",chats);
+        //send message
+        socket.emit("client send message", { to: id, from: myId , message : message})
+    }
 };
 
 socket.on("user list update", (data) => {
