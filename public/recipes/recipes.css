@@ -48,3 +48,13 @@
     width: 25%;
     display: inline-block;
 }
+
+.sorting-paging-buttons {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.size, .sort-dropdown {
+    align-self: flex-end;
+}

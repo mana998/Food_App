@@ -103,6 +103,7 @@ async function renderMyRecipes(container,filter = "") {
         }
         if (container == 'recipes-container'){
             $(".recipes").prepend(renderSortingPaging()).append(renderSortingPaging());
+            $(`.sort-dropdown option[value="${pageSort.filter}-${pageSort.direction}"]`).attr("selected", true);
             $(`#${pageSort.filter}-${pageSort.direction}`).attr("selected", true);
             
         }
