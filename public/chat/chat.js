@@ -22,6 +22,8 @@ const socket = io();
 
 let toggle = true;
 
+const maxChats = 3;
+
 let myId;
 
 //whether chat has already been rendered
@@ -88,15 +90,13 @@ function generateUserChat(user, index) {
     return(
         `<div class="user-chat-item chat ${user.id}" style="right: calc(15em * (${index >= 0 ? index + 1 : openChats.length}))">
             <div class="control-bar-user ${user.id}" onclick="toggleChat(${user.id})">${user.name}
-                
+                <button class="close-chat" onClick="closeChat(${user.id})">X</button>
             </div>
-            <button onClick="closeChat(${user.id})">X</button>
             <div class="specific-user-chat ${user.id}"> 
                 <div class="user-messages ${user.id}">
-                    <p class="user-name">${user.name}</p>
                 </div>
-                <input id="message${user.id}" type="text">
-                <button onClick="sendMessage(${user.id})">SEND</button>
+                <input id="message${user.id}" class="chat-input" type="text">
+                <button onClick="sendMessage(${user.id})" class="chat-send">SEND</button>
             </div>
     </div>`);
 }
@@ -121,7 +121,7 @@ socket.on("user list update", (data) => {
 })
 
 function generateMessage(position, message) {
-    return `<p class="user-message ${position}">${message}</p>`;
+    return `<p class="user-message ${position}">${message}</p></br>`;
 }
 
 //generate message either by sender or recipient
@@ -133,7 +133,7 @@ function renderMessage(id, isSender, message) {
 
 
 function openChat(user) {
-    if (!openChats.find(element => element.id === user.id)) {
+    if (!openChats.find(element => element.id === user.id) && openChats.length < maxChats) {
         openChats.push({id: user.id, name: user.name, toggle: false});
         //console.log(user.id);
         $("body").append(generateUserChat(user));
