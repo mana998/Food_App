@@ -22,14 +22,17 @@
 
         $(`#block${currentForBig}`).append(`
         <div class="col-3 recipe-carusel-item">
-                <div class="img-size">
-                    <a href="./recipes/${recipe.name}" ><img class="home-image" src="./../global/images/${recipe.img}.jpg" alt=""></a>
+            <a href="./recipes/${recipe.name}" >
+                <div id = 'img-size-${recipe.id}' class="img-size">
+                    
                 </div>
+                </a>
                 <div class="image-name">
                     <p>${recipe.name}</p>
                 </div>
         </div>
         `)
+        $(`#img-size-${recipe.id}`).css('background-image',`url(./../global/images/${recipe.img}.jpg)`);
         $("#item0").addClass("active");
 
         //medium size carousel
@@ -39,10 +42,13 @@
     
             <div id = "medium-item${index}" class="carousel-item col-11 medium-carousel-style">
                
-                    <div class=" recipe-carusel-item">
-                        <div class="img-size">
-                            <a href="./recipes/${recipe.name}" ><img class="home-image active image-style" src="./../global/images/${recipe.img}.jpg" alt=""></a>
+           
+                <div class=" recipe-carusel-item">
+                    <a href="./recipes/${recipe.name}" > 
+                        <div id='small-image-${recipe.id}' class="img-size">
+                            
                         </div>
+                    </a>
                         <div class="image-name">
                             <p>${recipe.name}</p>
                         </div>
@@ -51,7 +57,7 @@
                 
             </div>  
             `);
-        
+            $(`#small-image-${recipe.id}`).css('background-image',`url(./../global/images/${recipe.img}.jpg)`);
       
         $("#medium-item0").addClass("active");
         

@@ -52,10 +52,31 @@
     font-size: 90%;
 }
 
+#spread-icon{
+    max-width: 5% !important;
+    max-height: 5% !important;
+    margin-left: 5%;
+    cursor: pointer;
+   
+
+}
+#img-container{
+    background-size: cover;
+    min-height: 60vh;
+    background-position: center;
+}
+
+
 
 @media only screen and (max-width: 992px) {
     .ingredients-headder{
         padding-top: 5%;
     }
-  }
+}
+
+@media only screen and (max-width: 992px) {
+    .ingredients-headder{
+        padding-top: 5%;
+    }
+}
 

@@ -70,7 +70,6 @@ router.get("/api/recipes/ingredients", (req, res) => {
     console.log(req.query.ingredients);
     let values = [];
     //if (req.query.ingredients && req.query.ingredient.lengths > 0) {
-    if (req.query.ingredients) values = [...req.query.ingredients];
     /*`SELECT recipe.recipe_id, recipe_name, recipe_img, likes, ingredient_has_recipe.ingredient_id  FROM recipe 
 	INNER JOIN ingredient_has_recipe 
 	ON recipe.recipe_id = ingredient_has_recipe.recipe_id
@@ -78,7 +77,9 @@ router.get("/api/recipes/ingredients", (req, res) => {
 	GROUP BY recipe_id
     ) AS t0 `;*/
     let query = `SELECT recipe.recipe_id, recipe_name, recipe_img, likes, ingredient_has_recipe.ingredient_id  FROM recipe INNER JOIN ingredient_has_recipe ON recipe.recipe_id = ingredient_has_recipe.recipe_id WHERE ingredient_id = ? GROUP BY recipe_id) AS t0 `;
-    if (req.query.ingredients && req.query.ingredients.length > 1) {
+    if (req.query.ingredients && typeof(req.query.ingredients) !== 'string') {
+        values = [...req.query.ingredients];
+        console.log(typeof(req.query.ingredients));
         req.query.ingredients.map((id, index) => {
             if (index !== 0) {
                 query = `(SELECT t${index - 1}.recipe_id, recipe_name, recipe_img, likes FROM ( ${query}`;
@@ -90,6 +91,8 @@ router.get("/api/recipes/ingredients", (req, res) => {
                 //values.unshift(id);
             }
         })
+    }else{
+        values.push(req.query.ingredients);
     }
     //console.log(query);
     //query = "(SELECT t0.recipe_id, recipe_name, recipe_img, likes FROM ( SELECT recipe.recipe_id, recipe_name, recipe_img, likes, ingredient_has_recipe.ingredient_id  FROM recipe INNER JOIN ingredient_has_recipe ON recipe.recipe_id = ingredient_has_recipe.recipe_id WHERE ingredient_id = ? GROUP BY recipe_id) AS t0 INNER JOIN ingredient_has_recipe ON t0.recipe_id = ingredient_has_recipe.recipe_id WHERE ingredient_has_recipe.ingredient_id = ? GROUP BY recipe_id) AS t0";
@@ -101,6 +104,7 @@ router.get("/api/recipes/ingredients", (req, res) => {
     //let regex = /^\(*+(.+?)(\) AS t(\d)+ )?$/;
     //query = query.replace(regex, '$1;')
     //needs to be in there as else it is putting it into quotes
+    console.log(values);
     db.query(query, values, (error, result, fields) => {
         if (result && result.length) {
             //write recipe to object

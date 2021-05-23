@@ -44,6 +44,9 @@
 .img-size{
     height: 75%;
     text-align: center;
+    background-size: cover;
+    min-height: 40vh;
+    background-position: center;
 
 }
 

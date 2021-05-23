@@ -18,13 +18,12 @@ async function renderRecipe() {
 
     $(".flex-container").append(`
     <div id ="recipe-container" class="row">
-        <div class="col-12 col-lg-8">
-            <img class="recipe-img" src="./../global/images/${result.recipe.img}.jpg" alt="${result.recipe.name} image"}>
+        <div id="img-container" class="col-12 col-lg-8">
+           <!-- <img class="recipe-img" src="./../global/images/${result.recipe.img}.jpg" alt="${result.recipe.name} image"}>-->
         </div>
         <div id ="ingredients" class=" col-12 col-lg-4 "></div>
     </div>`);
-
-
+    $('#img-container').css('background-image',`url(./../global/images/${result.recipe.img}.jpg)`)
     $("#ingredients").append(`<h3 class="ingredients-headder">Ingredients List</h3><table class="table table-hover"><tbody></tbody></table>`)
 
     for(const i in result.ingredients){

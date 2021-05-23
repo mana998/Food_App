@@ -13,11 +13,11 @@ function generateRecipe(recipe, container){
 
     return(  
     `<div class="${imageCol} account-recipe-item">
-        <div class="img-size">
-            <a href="/recipes/${recipe.name}" >
-                <img class="home-image" src="./../global/images/${recipe.img}.jpg" alt="">
-            </a>
-        </div>
+        <a href="/recipes/${recipe.name}" >
+            <div id="recipe-block-${recipe.id}" class="img-size">
+            
+            </div>
+        </a>
         <div class="image-name">
             <p>${recipe.name}</p>
         </div>
@@ -27,7 +27,9 @@ function generateRecipe(recipe, container){
             <img onclick="updateModal('${recipe.name}')" id="update-icon-${container}-${recipe.id}" class="icon" src="./../global/icons/update.png" alt="update icon" data-toggle="modal" data-target="#recipeFormModalAdd"></img> 
         </div>
         <p id="recipe_id" hidden>${recipe.id}</p>
+        <script>$('#recipe-block-${recipe.id}').css('background-image','url(./../global/images/${recipe.img}.jpg)');</script>
     </div>`
+    
     );
 
 };
