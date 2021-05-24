@@ -83,8 +83,8 @@ async function register(){
         password.value = '';
         repeatPassword.value = '';
         return;
-    } else if (!password.value.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\.,"!@#$%^&*+`~'=?\|\]\[\(\)\-<>/]).{8,}$/)) {
-        $("#message").text("Passwords must contain at least 8 characters (1 lowercase letter, 1 uppercase letter, number and a special character). Try again");
+    } else if (!password.value.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\.,_"!@#$%^&*+`~'=?\|\]\[\(\)\-<>/]).{8,}$/)) {
+        $("#message").text("Passwords must contain at least 8 characters (1 lowercase letter, 1 uppercase letter, number and a special character .,_\"!@#$%^&*+`~'=?\|\]\[\(\)\-<>/). Try again");
         password.value = '';
         repeatPassword.value = '';
         return;
