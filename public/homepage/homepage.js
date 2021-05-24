@@ -3,10 +3,10 @@
     let fetchRecipe = `/api/recipes?size=9&filter=likes&direction=desc`;
     const response = await fetch(fetchRecipe);
     const result = await response.json();
-  
+    let currentForBig = 0;
     result.recipes.map((recipe,index) => {
 
-        let currentForBig = 0;
+        
         //big size carousel
         if (index % 3 == 0){
             $(".carousel-inner").append(`
