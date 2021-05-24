@@ -30,6 +30,8 @@ async function login(){
         }
     }
     $("#message").text(result.message);
+    //redirect
+    window.location.replace('/');
 }
 
 async function setSession(loginResult) {
