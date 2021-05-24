@@ -20,11 +20,41 @@
     margin-top: 3%;
 }
 .icon{
-    max-width: 5%;
-    max-height: 5%;
+    max-width: 15%;
+    max-height: 15%;
     cursor: pointer;
     margin-left: 5%; 
 }
+
+#spread-icon{
+    max-width: 4%;
+    max-height: 4%;
+    margin-left: 5%;
+    cursor: pointer;
+   
+}
+@media only screen and (max-width: 992px) {
+    #spread-icon{
+        max-width: 5%;
+        max-height: 5%;
+       
+    }
+
+}
+@media only screen and (max-width: 768px) {
+    #spread-icon{
+        max-width: 7%;
+        max-height: 7%;
+       
+    }
+    .icon{
+        max-width: 12%;
+        max-height: 12%;
+        cursor: pointer;
+        margin-left: 5%; 
+    }
+}
+
 
 .account-recipe-item {
     margin: 3%;
