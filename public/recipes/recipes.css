@@ -1,50 +1,38 @@
-.account-recipe-item{
+.account-recipe-item {
     margin: 3%;
 }
 
-#recipes-container{
+#recipes-container {
     margin-left: 5%;
 }
 
-.icon{
+.icon {
     max-width: 15%;
     max-height: 15%;
     cursor: pointer;
     margin-left: 5%; 
 }
 
-@media only screen and (max-width: 992px) {
-    .icon{
-        max-width: 20%;
-        max-height: 20%;
-    }
-}
-
-@media only screen and (max-width: 768px) {
-    .icon{
-        max-width: 10%;
-        max-height: 10%;
-    }
-}
-
-#update-icon{
+#update-icon {
     display: none;
 }
-.recipes-page{
+
+.recipes-page {
     padding: 3% 10% 0% 10%;
-  
 }
-.page-title{
+
+.page-title {
     border-bottom: 1px solid black;
     padding-bottom: 2%;
     font-weight: bold;
     color: #BA9291;
 }
 
-.size, .page{
+.size, .page {
     border: 1px solid #BA9291;
 }
-.sort-dropdown{
+
+.sort-dropdown {
     width: 25%;
     display: inline-block;
 }
@@ -57,4 +45,18 @@
 
 .size, .sort-dropdown {
     align-self: flex-end;
+}
+
+@media only screen and (max-width: 992px) {
+    .icon {
+        max-width: 20%;
+        max-height: 20%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .icon {
+        max-width: 10%;
+        max-height: 10%;
+    }
 }

@@ -1,6 +1,4 @@
-const saltRounds = 15;
-
-async function login(){
+async function login() {
     let username = document.getElementById("username");
     let password = document.getElementById("password");
     let fetchString = `/api/login`;
@@ -12,8 +10,8 @@ async function login(){
         },
         body: JSON.stringify({username: username.value, password: password.value})
     });
-    username.value="";
-    password.vaule="";
+    username.value = "";
+    password.vaule = "";
     let result = await response.json();
     if (result.id) {
         result = await setSession(result);
@@ -24,18 +22,19 @@ async function login(){
                 await socket.emit("online users change");
                 $('#loginModal').modal('hide');
                 setLogoutHtml(result.id);
+
                 //let server know that user is logged in
                 socket.emit("user connected", ({id: result.id}));
             }
         }
     }
     $("#message").text(result.message);
+
     //redirect
     window.location.replace('/');
 }
 
 async function setSession(loginResult) {
-    //console.log("result session", result);
     const fetchString = `/setsession/id`;
     const response = await fetch(fetchString, {
         method: 'POST',
@@ -56,28 +55,26 @@ async function updateLoginStatus(id) {
     return result;
 }
 
-function registerStart(){
+function registerStart() {
     $("#repeatPasswordLabel").show();
     $("#repeatPassword").show();
-    $("#register").attr("onclick","register()").removeClass("btn-secondary").addClass("btn-primary")
+    $("#register").attr("onclick","register()").removeClass("btn-secondary").addClass("btn-primary");
     $("#loginButton").attr("onclick", "loginStart()").addClass("btn-secondary").removeClass("btn-primary");
     $(".modal-title").text("Register");
 }
 
-function loginStart(){
+function loginStart() {
     $("#repeatPasswordLabel").hide();
     $("#repeatPassword").hide();
-    //$("#repeatPassword").remove();
-    $("#register").attr("onclick","registerStart()").addClass("btn-secondary").removeClass("btn-primary")
+    $("#register").attr("onclick","registerStart()").addClass("btn-secondary").removeClass("btn-primary");
     $("#loginButton").attr("onclick", "login()").removeClass("btn-secondary").addClass("btn-primary");
     $(".modal-title").text("Login");
 }
 
-async function register(){
+async function register() {
     let username = document.getElementById("username");
     let password = document.getElementById("password");
     let repeatPassword = document.getElementById("repeatPassword");
-    //console.log("username",username,"password",password, "repeatPassword", repeatPassword);
     if (password.value !== repeatPassword.value) {
         $("#message").text("Passwords do not match. Try again");
         password.value = '';
@@ -93,7 +90,6 @@ async function register(){
         username.value = '';
         return;
     }
-
     let fetchString = `/api/register`;
     const response = await fetch(fetchString, {
         method: 'POST',
@@ -123,22 +119,25 @@ async function logout(id) {
     } else {
         alert (result.message);
     }
+
     //redirect
     window.location.replace('/');
 }
 
-function setLoginHtml(){
+function setLoginHtml() {
     $('#nav-my-account').hide();
     $('#login-style').text("Login").attr({"data-target": "#loginModal", "data-toggle": "modal"}).removeAttr('onClick');
 }
 
-function setLogoutHtml(id){
-    $("#my-account").attr("href", `/myAccount/${id}`)
+function setLogoutHtml(id) {
+    $("#my-account").attr("href", `/myAccount/${id}`);
     $('#nav-my-account').show();
     $('#login-style').text("Logout").removeAttr('data-target data-toggle').attr('onClick', `logout(${id});`);
 }
 
-window.addEventListener("load", () => checkSession());
+window.addEventListener("load", () => {
+    checkSession();
+});
 
 async function checkSession() {
     const response = await getLoginSession();
@@ -158,4 +157,4 @@ async function getLoginSession() {
     } else {
         console.log("Something went wrong");
     }
-};
+}

@@ -1,50 +1,45 @@
-.recipe-img{
+.recipe-img {
     max-height: 100%;
     max-width: 100%;
-
 }
 
-.image-container{
-    height: 40vh;
-    
-    
+.image-container {
+    height: 40vh;  
 }
 
-.recipe-page{
+.recipe-page {
     padding: 3% 10% 0% 10%;
-  
 }
 
-#recipe-container{
+#recipe-container {
     padding-top: 5%;
 }
 
-.description-headder{
+.description-headder {
     padding-bottom: 2%;
     padding-top: 5%;
     border-bottom: 1px solid black;
 }
 
-.ingredients-headder{
-    padding-bottom: 2%;
-    
+.ingredients-headder {
+    padding-bottom: 2%;  
 }
 
-.page-title{
+.page-title {
     border-bottom: 1px solid black;
     padding-bottom: 2%;
     font-weight: bold;
     color: #BA9291;
 }
 
-.icon{
+.icon {
     max-width: 8%;
     max-height: 8%;
     cursor: pointer;
     margin-left: 5%;
-    
 }
-.likes{
+
+.likes {
     text-align: center;
     color: #BA9291;
     display: inline-block;
@@ -52,31 +47,27 @@
     font-size: 90%;
 }
 
-#spread-icon{
+#spread-icon {
     max-width: 5% !important;
     max-height: 5% !important;
     margin-left: 5%;
     cursor: pointer;
-   
-
 }
-#img-container{
+
+#img-container {
     background-size: cover;
     min-height: 60vh;
     background-position: center;
 }
 
-
-
 @media only screen and (max-width: 992px) {
-    .ingredients-headder{
+    .ingredients-headder {
         padding-top: 5%;
     }
 }
 
 @media only screen and (max-width: 992px) {
-    .ingredients-headder{
+    .ingredients-headder {
         padding-top: 5%;
     }
 }
-

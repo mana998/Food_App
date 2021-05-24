@@ -1,4 +1,3 @@
-
 const lengths = [5, 10, 25, 50, 100];
 
 let pageSort = {
@@ -18,7 +17,7 @@ function renderSortingPaging() {
     result += '</div><div class="sorting-paging-buttons">';
     lengths.map((length) => {
         result += renderLengthButton(length);
-    })
+    });
     result += renderSorting();
     result += '</div>';
     return result;
@@ -26,20 +25,22 @@ function renderSortingPaging() {
 
 
 function renderPageButton(symbol, value) {
-    return `<button class="page btn" onClick="pageSort.page += ${value}; renderMyRecipes('recipes-container');">${symbol}</button>`
+    return `<button class="page btn" onClick="pageSort.page += ${value}; renderMyRecipes('recipes-container');">${symbol}</button>`;
 }
 
 function renderLengthButton(value) {
-    return `<button class="size btn" onClick="pageSort.size = ${value}; renderMyRecipes('recipes-container');">${value}</button>`
+    return `<button class="size btn" onClick="pageSort.size = ${value}; renderMyRecipes('recipes-container');">${value}</button>`;
 }
 
 function renderSorting() {
-    return `<select class="sort-dropdown form-control " onChange = "sortRecipes(value)">  
-        <option value = 'recipe_id-desc' id = 'recipe_id-desc'>Newest to Oldest</option> 
-        <option value = 'recipe_id-asc' id = 'recipe_id-asc'>Oldest to Newest</option> 
-        <option value = 'likes-desc' id = 'likes-desc'>Most popular</option> 
-        <option value = 'likes-asc' id = 'likes-asc'>Least popular</option> 
-    </select>`
+    return (
+        `<select class="sort-dropdown form-control " onChange = "sortRecipes(value)">  
+            <option value = 'recipe_id-desc' id = 'recipe_id-desc'>Newest to Oldest</option> 
+            <option value = 'recipe_id-asc' id = 'recipe_id-asc'>Oldest to Newest</option> 
+            <option value = 'likes-desc' id = 'likes-desc'>Most popular</option> 
+            <option value = 'likes-asc' id = 'likes-asc'>Least popular</option> 
+        </select>`
+    );
 }
 
 function sortRecipes(value) {

@@ -13,7 +13,7 @@
 }
 
 .chat-container-users {
-    overflow-y : auto;
+    overflow-y: auto;
     max-height: 40em;
 }
 
@@ -36,7 +36,7 @@
 .user-messages {
     height: 15em;
     padding: 0.5em;
-    overflow-y : auto;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -106,18 +106,16 @@
     overflow-wrap: break-word;
 }
 
-
-
 .close-chat {
-    float:right;
+    float: right;
     outline: none;
     border: none;
     background: none;
-    color:rgb(56, 56, 56);
+    color: rgb(56, 56, 56);
 }
 
 .close-chat:hover {
-    color:rgb(153, 153, 153);
+    color: rgb(153, 153, 153);
 }
 
 .chat-input {
