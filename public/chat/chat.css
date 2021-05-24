@@ -10,7 +10,11 @@
     box-shadow: -0.1em 0.5em 0.5em #f8f8f8;
     z-index: 2;
     max-height: 40em;
+}
+
+.chat-container-users {
     overflow-y : auto;
+    max-height: 40em;
 }
 
 .user-chat-item {
