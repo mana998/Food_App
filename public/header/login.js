@@ -83,7 +83,17 @@ async function register(){
         password.value = '';
         repeatPassword.value = '';
         return;
+    } else if (!password.value.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\.,"!@#$%^&*+`~'=?\|\]\[\(\)\-<>/]).{8,}$/)) {
+        $("#message").text("Passwords must contain at least 8 characters (1 lowercase letter, 1 uppercase letter, number and a special character). Try again");
+        password.value = '';
+        repeatPassword.value = '';
+        return;
+    }  else if (!username.value.match(/^.{5,}$/)) {
+        $("#message").text("Username must contain at least 5 characters. Try again");
+        username.value = '';
+        return;
     }
+
     let fetchString = `/api/register`;
     const response = await fetch(fetchString, {
         method: 'POST',
