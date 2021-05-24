@@ -76,7 +76,6 @@
 .left {
     float: left;
     background-color: #f8f8f8;
-    margin-right: 100%;
 }
 
 .right {
@@ -84,6 +83,26 @@
     background-color: #BA9291;
     margin-left: 100%;
 }
+
+.left.short {
+    margin-right: 100%;
+}
+
+.left.long {
+    width: 75%;
+    overflow-wrap: break-word;
+}
+
+.right.short {
+    margin-left: 100%;
+}
+
+.right.long {
+    width: 75%;
+    overflow-wrap: break-word;
+}
+
+
 
 .close-chat {
     float:right;

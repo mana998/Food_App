@@ -123,7 +123,7 @@ socket.on("user list update", (data) => {
 })
 
 function generateMessage(position, message) {
-    return `<p class="user-message ${position}">${message}</p></br>`;
+    return `<p class="user-message ${position} ${message.length <= 20 ? 'short' : 'long'}">${message}</p></br>`;
 }
 
 //generate message either by sender or recipient
