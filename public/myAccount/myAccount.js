@@ -199,18 +199,33 @@ async function submitForm(e) {
     let formData = new FormData(document.getElementById('recipeForm'));
     formData.append('user_id', user_id);
     let response = '';
+    let result = '';
     if ($('#modalHeadder').text() === 'Add recipe') {
-        response = await fetch("/api/recipe/recipeAdd", {
-            method: 'post',
-            body: formData
-        });
+        if (recipeNameCheck(formData.get('recipe_name')) === 'Not exists') {
+            response = await fetch("/api/recipe/recipeAdd", {
+                method: 'post',
+                body: formData
+            });
+            result = await response.json();
+        } else {
+            result = {
+                message: "Recipe name already exists."
+            }
+        }
     } else if ($('#modalHeadder').text() === 'Update recipe') {
-        response = await fetch("/api/recipe/recipeUpdate", {
-            method: 'put',
-            body: formData
-        });
+        if (recipeNameCheck(formData.get('recipe_name'),formData.get('recipe_id')) === 'Not exists') {
+            response = await fetch("/api/recipe/recipeUpdate", {
+                method: 'put',
+                body: formData
+            });
+            result = await response.json();           
+        }else {
+            result = {
+                message: "Recipe name already exists."
+            }
+        }
     }
-    let result = await response.json();
+
     if (result.message == "Image uploaded.") {
         $('#your-recipes').empty();
         renderMyRecipes("your-recipes");
@@ -220,6 +235,19 @@ async function submitForm(e) {
     } else {
         $('#img-response').text(result.message);
     }   
+}
+
+//check if name already exists
+async function recipeNameCheck(recipe_name, recipe_id = -1) {
+    let fetchString = "/api/recipes";
+    const response = await fetch(fetchString);
+    const result = await response.json();    
+    result.recipes.forEach(recipe => {
+        if (recipe.name === recipe_name && recipe.id !== recipe_id) {
+            return "Exists";
+        }
+    });
+    return "Not exists"
 }
 
 //add/delete recipe to favorite for the user who is logged in
