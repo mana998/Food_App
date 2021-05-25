@@ -244,7 +244,7 @@ async function recipeNameCheck(recipe_name, recipe_id = -1) {
     let fetchString = "/api/recipes";
     const response = await fetch(fetchString);
     const result = await response.json();  
-    for (let recipe of result.recipes
+    for (let recipe of result.recipes){
         if (recipe.name === recipe_name && recipe.id !== Number(recipe_id)) {
             console.log('here');
             return "Exists";
