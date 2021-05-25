@@ -201,7 +201,8 @@ async function submitForm(e) {
     let response = '';
     let result = '';
     if ($('#modalHeadder').text() === 'Add recipe') {
-        if (recipeNameCheck(formData.get('recipe_name')) === 'Not exists') {
+        let nameCheck = await recipeNameCheck(formData.get('recipe_name'));
+        if (nameCheck === "Not exists") {
             response = await fetch("/api/recipe/recipeAdd", {
                 method: 'post',
                 body: formData
@@ -213,7 +214,9 @@ async function submitForm(e) {
             }
         }
     } else if ($('#modalHeadder').text() === 'Update recipe') {
-        if (recipeNameCheck(formData.get('recipe_name'),formData.get('recipe_id')) === 'Not exists') {
+        let nameCheck = await recipeNameCheck(formData.get('recipe_name'),formData.get('recipe_id'));
+        console.log(nameCheck);
+        if (nameCheck === "Not exists") {
             response = await fetch("/api/recipe/recipeUpdate", {
                 method: 'put',
                 body: formData
@@ -225,7 +228,6 @@ async function submitForm(e) {
             }
         }
     }
-
     if (result.message == "Image uploaded.") {
         $('#your-recipes').empty();
         renderMyRecipes("your-recipes");
@@ -241,13 +243,14 @@ async function submitForm(e) {
 async function recipeNameCheck(recipe_name, recipe_id = -1) {
     let fetchString = "/api/recipes";
     const response = await fetch(fetchString);
-    const result = await response.json();    
-    result.recipes.forEach(recipe => {
-        if (recipe.name === recipe_name && recipe.id !== recipe_id) {
+    const result = await response.json();  
+    for (let recipe of result.recipes
+        if (recipe.name === recipe_name && recipe.id !== Number(recipe_id)) {
+            console.log('here');
             return "Exists";
         }
-    });
-    return "Not exists"
+    }
+    return "Not exists";
 }
 
 //add/delete recipe to favorite for the user who is logged in

@@ -126,11 +126,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage, //holds the destnation and filename
-    limits: {fileSize: 1000000}, //def allowed file size   
+    limits: {fileSize: 5000000}, //def allowed file size   
 }).single('image-recipe');
 
 router.post("/api/recipe/recipeAdd", (req, res) => {
-    upload(req, res, err => {
+    upload(req, res, (err) => {
 
         //insert into recipe table
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
@@ -164,8 +164,9 @@ router.post("/api/recipe/recipeAdd", (req, res) => {
             
         });
         if (err) {
+            console.log(err);
             res.send({
-                message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size."
+                message: "Make sure that your image is .jpg or .jpeg and has max. 5MB size."
             });
             return;
         }else {
@@ -185,7 +186,7 @@ router.post("/api/recipe/recipeAdd", (req, res) => {
 })
 
 router.put("/api/recipe/recipeUpdate", (req, res) => {
-    upload(req, res, err => {
+    upload(req, res, (err) => {
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
 
         //deletes unused images
