@@ -132,6 +132,24 @@ const upload = multer({
 router.post("/api/recipe/recipeAdd", (req, res) => {
     upload(req, res, (err) => {
 
+        if (err) {
+            res.send({
+                message: "Make sure that your image is .jpg or .jpeg and has max. 5MB size."
+            });
+            return;
+        }else {
+            if (req.file === undefined) {
+                res.send({
+                    message: "No image selected."
+                });
+                return;               
+            } else {
+                res.send({
+                    message: "Image uploaded."
+                });             
+            }  
+        }
+
         //insert into recipe table
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
         db.query("INSERT INTO recipe (recipe_name, recipe_desc, user_id, recipe_img) VALUES (?, ?, ?, ?);",[req.body.recipe_name, req.body.recipe_description, req.body.user_id, recipe_img], (error, result, fields) => {
@@ -163,13 +181,19 @@ router.post("/api/recipe/recipeAdd", (req, res) => {
             }                     
             
         });
+        
+    });
+})
+
+router.put("/api/recipe/recipeUpdate", (req, res) => {
+    upload(req, res, (err) => {
+        const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
         if (err) {
-            console.log(err);
             res.send({
-                message: "Make sure that your image is .jpg or .jpeg and has max. 5MB size."
+                message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size."   
             });
             return;
-        }else {
+        } else {
             if (req.file === undefined) {
                 res.send({
                     message: "No image selected."
@@ -179,16 +203,9 @@ router.post("/api/recipe/recipeAdd", (req, res) => {
                 res.send({
                     message: "Image uploaded."
                 });
-                return;
-            }  
+                
+            }
         }
-    });
-})
-
-router.put("/api/recipe/recipeUpdate", (req, res) => {
-    upload(req, res, (err) => {
-        const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
-
         //deletes unused images
         db.query('SELECT recipe_img from recipe WHERE recipe.recipe_id = ?', [req.body.recipe_id], (error, result, fields) => {
             if (error) {
@@ -255,24 +272,6 @@ router.put("/api/recipe/recipeUpdate", (req, res) => {
                 });
             }    
         }       
-        if (err) {
-            res.send({
-                message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size."   
-            });
-            return;
-        } else {
-            if (req.file === undefined) {
-                res.send({
-                    message: "No image selected."
-                });
-                return;
-            } else {
-                res.send({
-                    message: "Image uploaded."
-                });
-                return;
-            }
-        }
     });
 })
                    

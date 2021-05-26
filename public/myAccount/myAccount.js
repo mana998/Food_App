@@ -164,7 +164,6 @@ async function renderMesures(inputId, ingredientId){
     const result = await response.json();    
     result.ingredients.map((ingredient,index) => {
         if (ingredient.id === Number(ingredientId)){
-            console.log('here');
             $(`#${inputId}`).attr("value", ingredient.measure);
         } 
     });
