@@ -128,14 +128,16 @@ function addIngredientField() {
     }
     $("#ingredientsArray").append(
         `<div id="box-${numberOfNextContainer}" class="row row-style" >
-            <select class="form-control col-6 ingredientsList" id="select-${numberOfNextContainer}" required placeholder="Enter ingredient"></select>
-            <input type="hidden" class="form-control  col-2" id="selected-ingredient-${numberOfNextContainer}" name="ingredients[ingredient${numberOfNextContainer}][id]">
+            <select class="form-control col-6 ingredientsList" id="select-${numberOfNextContainer}" name='ingredients[ingredient${numberOfNextContainer}][id]' required "></select>
             <input type="number" class="form-control  col-3" name = "ingredients[ingredient${numberOfNextContainer}][amount]" id="ingredient-amount-${numberOfNextContainer}" required placeholder="Amount">
             <input type="text" class="form-control  col-2" id="input-${numberOfNextContainer}" disabled placeholder="">
             <p onclick="removeIngredientField('box-${numberOfNextContainer}')" id="add-ingredient"><b>-</b></p>                             
          </div>`
     );
-    renderIngredients(`input-${numberOfNextContainer}`,`selected-ingredient-${numberOfNextContainer}`, `ingredient-amount-${numberOfNextContainer}`);  
+    renderIngredients(`input-${numberOfNextContainer}`,`select-${numberOfNextContainer}`);  
+    $(`#select-${numberOfNextContainer}`).on('change', function() {
+        renderMesures(`input-${numberOfNextContainer}`,$(`#select-${numberOfNextContainer} option:selected`).val());
+    });
 }
 
 //remove given ingredient container 
@@ -149,17 +151,28 @@ async function renderIngredients(inputId, selectId) {
     const response = await fetch(fetchString);
     const result = await response.json();    
     result.ingredients.map((ingredient,index) => {
-        $(".ingredientsList").append(`<option onclick="setMeasure('${ingredient.measure}', '${inputId}', '${selectId}', '${ingredient.id}')">${ingredient.name}</option>`);
+        $(`#${selectId}`).append(`<option value="${ingredient.id}">${ingredient.name}</option>`);
         if (index === 0) {
-            setMeasure(`${ingredient.measure}`, `${inputId}`,`${selectId}`, `${ingredient.id}`);
+            setMeasure(`${ingredient.measure}`, `${inputId}`);
+        } 
+    });
+}
+
+async function renderMesures(inputId, ingredientId){
+    let fetchString = `/api/recipe/ingredients`;
+    const response = await fetch(fetchString);
+    const result = await response.json();    
+    result.ingredients.map((ingredient,index) => {
+        if (ingredient.id === Number(ingredientId)){
+            console.log('here');
+            $(`#${inputId}`).attr("value", ingredient.measure);
         } 
     });
 }
         
 //set measure according to waht we have in db and set ingredient id which we send to db to ad to table with recipes and ingredients
-function setMeasure(measure, inputId, selectId, ingredient_id) {
+function setMeasure(measure, inputId) {
     $(`#${inputId}`).attr("value", measure);
-    $(`#${selectId}`).attr("value", ingredient_id);
 }
 
 $('#ingredientForm').on('submit', addNewIngredient);
