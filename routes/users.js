@@ -1,10 +1,34 @@
 const router = require("express").Router();
 const db = require("./../database/connection").connection; 
 const bcrypt = require("bcrypt");
+const User = require("./../models/User").User;
 
 const saltRounds = 15;
 
-router.post("/api/login", (req, res) => {
+router.get("/api/users/active", (req, res) => {
+    let id = req.query.id || -1;
+    let query = 'SELECT user_id, username FROM user WHERE user_id != ? && active = 1;'
+    db.query(query, [id], (error, result, fields) => {
+    
+        //this part should be outside
+        if (result && result.length) {
+            
+            //write user to object
+            const users = [];
+            for (const user of result) {
+                users.push(new User(user.user_id, user.username));
+            }
+            res.send({users});
+        } else {
+            res.send({
+                message: "No users found"
+            });
+        }
+    });
+})
+
+
+router.post("/api/users/login", (req, res) => {
     db.query('SELECT * FROM user WHERE username=?;',[req.body.username], (error, result, fields) => {
         if (result && result.length === 1) {
             bcrypt.compare(req.body.password, result[0].password, (error, match) => {
@@ -26,29 +50,8 @@ router.post("/api/login", (req, res) => {
     });  
 })
 
-router.patch("/api/login", (req, res) => {
-    updateActive(req.body.id, 1, res);
-})
 
-router.patch("/api/logout", (req, res) => {
-    updateActive(req.body.id, 0, res);
-})
-
-function updateActive(id, active, res) {
-    db.query('UPDATE user SET active=? WHERE user_id=?;',[active, id], (error, result, fields) => {
-        if (!result || result.changedRows > 1) {
-            res.send({
-                message: "Something went wrong. Try again."
-            });
-        } else {
-            res.send({
-                id: id
-            });
-        }
-    }); 
-}
-
-router.post("/api/register", (req, res) => {
+router.post("/api/users/register", (req, res) => {
     db.query('SELECT * FROM user WHERE username=?;',[req.body.username], (error, result, fields) => {
         if (result && result.length === 1) {
             res.send({
@@ -81,6 +84,28 @@ router.post("/api/register", (req, res) => {
         }
     });
 })
+
+router.patch("/api/users/login", (req, res) => {
+    updateActive(req.body.id, 1, res);
+})
+
+router.patch("/api/users/logout", (req, res) => {
+    updateActive(req.body.id, 0, res);
+})
+
+function updateActive(id, active, res) {
+    db.query('UPDATE user SET active=? WHERE user_id=?;',[active, id], (error, result, fields) => {
+        if (!result || result.changedRows > 1) {
+            res.send({
+                message: "Something went wrong. Try again."
+            });
+        } else {
+            res.send({
+                id: id
+            });
+        }
+    }); 
+}
 
 module.exports = {
     router: router

@@ -1,7 +1,7 @@
 async function login() {
     let username = document.getElementById("username");
     let password = document.getElementById("password");
-    let fetchString = `/api/login`;
+    let fetchString = `/api/users/login`;
     const response = await fetch(fetchString, {
         method: 'POST',
         headers: {
@@ -49,7 +49,7 @@ async function setSession(loginResult) {
 }
 
 async function updateLoginStatus(id) {
-    const fetchString = `/api/login`;
+    const fetchString = `/api/users/login`;
     const response = await fetch(fetchString, {
         method: 'PATCH',
         headers: {
@@ -97,7 +97,7 @@ async function register() {
         username.value = '';
         return;
     }
-    let fetchString = `/api/register`;
+    let fetchString = `/api/users/register`;
     const response = await fetch(fetchString, {
         method: 'POST',
         headers: {
@@ -111,7 +111,7 @@ async function register() {
 }
 
 async function logout(id) {
-    let fetchString = `/api/logout`;
+    let fetchString = `/api/users/logout`;
     let response = await fetch(fetchString, {
         method: 'PATCH',
         headers: {

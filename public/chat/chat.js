@@ -147,7 +147,7 @@ async function renderChat() {
         }
 
         //get only username and id except user with specified id
-        let fetchString = `/api/chat?id=${myId}`;
+        let fetchString = `/api/users/active?id=${myId}`;
         const response = await fetch(fetchString);
         const result = await response.json();
         $(".chat-container-users .user-chat").remove();
