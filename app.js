@@ -26,16 +26,19 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.static(__dirname + '/public'));
 
 const recipesRouter = require("./routes/recipes.js");
-const loginRouter = require("./routes/users.js");
+const usersRouter = require("./routes/users.js");
 const sessionRouter = require("./routes/session.js");
 const recipeRouter = require("./routes/recipe.js");
 const ingredientsRouter = require("./routes/ingredients.js");
+const measurementsRouter = require("./routes/measurements.js");
+
 
 app.use(recipesRouter.router);
-app.use(loginRouter.router);
+app.use(usersRouter.router);
 app.use(sessionRouter.router);
 app.use(recipeRouter.router);
 app.use(ingredientsRouter.router);
+app.use(measurementsRouter.router);
 
 
 const header = fs.readFileSync(__dirname + '/public/header/header.html', 'utf8');

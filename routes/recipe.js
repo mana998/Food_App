@@ -32,25 +32,6 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
 
 //const parseMulter = multer();
 
-router.get('/api/recipe/measures', (req,res) => {
-
-    //get ingredients from db
-    db.query('SELECT * FROM measurement;', (error, result, fields) => {
-        if (result.length !== 0) {
-            const measures = [];
-            for (let measure of result){
-                measures.push( {name : measure.measurement_name, id: measure.measurement_id} );
-            }      
-            res.send({
-                measures: measures
-            });
-        } else {
-            res.send({
-                message: "There are no measures."
-            });
-        }
-    });  
-})
 
 //Code neccessary for uploading the images. multer, path def at the top of the page!
 const storage = multer.diskStorage({

@@ -159,7 +159,7 @@ async function renderIngredients(inputId, selectId) {
 }
 
 async function renderMesures(inputId, ingredientId){
-    let fetchString = `/api/recipe/ingredients`;
+    let fetchString = `/api/ingredients`;
     const response = await fetch(fetchString);
     const result = await response.json();    
     result.ingredients.map((ingredient,index) => {
@@ -191,7 +191,7 @@ async function addNewIngredient(e) {
 }
 
 (async function loadMeasures() {
-    let fetchString = `/api/recipe/measures`;
+    let fetchString = `/api/measurements`;
     const response = await fetch(fetchString);
     const result = await response.json(); 
     if (result.message) {
