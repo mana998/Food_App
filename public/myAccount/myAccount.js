@@ -147,7 +147,7 @@ function removeIngredientField(boxId) {
 
 //get all ingredients options for form
 async function renderIngredients(inputId, selectId) {
-    let fetchString = `/api/recipe/ingredients`;
+    let fetchString = `/api/ingredients`;
     const response = await fetch(fetchString);
     const result = await response.json();    
     result.ingredients.map((ingredient,index) => {
@@ -181,7 +181,7 @@ async function addNewIngredient(e) {
     let form = document.getElementById('ingredientForm');
     let ingredientForm = new FormData(form);
     ingredientForm.append("measure_id", ($('#ingredientForm option:selected').val()));
-    const response = await fetch(`/api/recipe/addIngredient`, {
+    const response = await fetch(`/api/ingredients`, {
         method: 'post',
         body: ingredientForm
     });
