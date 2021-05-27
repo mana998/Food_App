@@ -26,12 +26,12 @@ router.post("/api/login", (req, res) => {
     });  
 })
 
-router.get("/api/login/:id", (req, res) => {
-    updateActive(req.params.id, 1, res);
+router.patch("/api/login", (req, res) => {
+    updateActive(req.body.id, 1, res);
 })
 
-router.get("/api/logout/:id", (req, res) => {
-    updateActive(req.params.id, 0, res);
+router.patch("/api/logout", (req, res) => {
+    updateActive(req.body.id, 0, res);
 })
 
 function updateActive(id, active, res) {

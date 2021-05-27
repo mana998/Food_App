@@ -49,8 +49,15 @@ async function setSession(loginResult) {
 }
 
 async function updateLoginStatus(id) {
-    const fetchString = `/api/login/${id}`;
-    const response = await fetch(fetchString);
+    const fetchString = `/api/login`;
+    const response = await fetch(fetchString, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: id})
+    });
     const result = await response.json();
     return result;
 }
@@ -104,8 +111,15 @@ async function register() {
 }
 
 async function logout(id) {
-    let fetchString = `/api/logout/${id}`;
-    let response = await fetch(fetchString);
+    let fetchString = `/api/logout`;
+    let response = await fetch(fetchString, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: id})
+    });
     let result = await response.json();
     if (result.id) {
         let fetchString = `/destroysession`;
