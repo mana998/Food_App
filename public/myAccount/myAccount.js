@@ -215,7 +215,7 @@ async function submitForm(e) {
     if ($('#modalHeadder').text() === 'Add recipe') {
         let nameCheck = await recipeNameCheck(formData.get('recipe_name'));
         if (nameCheck === "Not exists") {
-            response = await fetch("/api/recipe/recipeAdd", {
+            response = await fetch("/api/recipes", {
                 method: 'post',
                 body: formData
             });
@@ -229,7 +229,7 @@ async function submitForm(e) {
         let nameCheck = await recipeNameCheck(formData.get('recipe_name'),formData.get('recipe_id'));
         console.log(nameCheck);
         if (nameCheck === "Not exists") {
-            response = await fetch("/api/recipe/recipeUpdate", {
+            response = await fetch("/api/recipes", {
                 method: 'put',
                 body: formData
             });
@@ -281,7 +281,7 @@ async function addOrDeleteFromFavorite(recipe_id, heart_id, container) {
 
 //add favorite
 async function addFavorite(recipe_id, user_id, container) {
-    const response = await fetch(`/api/recipe/addToFavorite`, {
+    const response = await fetch(`/api/recipes/favorites`, {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -300,7 +300,7 @@ async function addFavorite(recipe_id, user_id, container) {
 
 //delete favorite
 async function deleteFavorite(recipe_id, user_id, container) {
-    const response = await fetch(`/api/recipe/deleteFromFavorite`, {
+    const response = await fetch(`/api/recipes/favorites`, {
         method: 'delete',
         headers: {
             'Accept': 'application/json',
