@@ -123,7 +123,9 @@ async function logout(id) {
     let result = await response.json();
     if (result.id) {
         let fetchString = `/destroysession`;
-        let response = await fetch(fetchString);
+        let response = await fetch(fetchString, {
+            method: 'DELETE'
+        });
         let result = await response.json();
         if (result.message === "Session destroyed") {
             setLoginHtml();

@@ -31,7 +31,7 @@ router.post("/setsession/chat", (req, res) => {
     }
 })
 
-router.get("/destroysession", (req, res) => {
+router.delete("/destroysession", (req, res) => {
     req.session.destroy(error => {
         if (error) {
             res.send({ 
