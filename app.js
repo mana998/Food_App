@@ -3,7 +3,7 @@ const app = express();
 const session = require("express-session");
 const fs = require('fs');
 const fetch = require("node-fetch");
-//const bcrypt = require("bcrypt");
+const helmet = require("helmet");
 
 //get the connection to db so yuo can run queries, connection defined in folder database file connection.js
 const db = require("./database/connection").connection; 
@@ -12,6 +12,22 @@ const db = require("./database/connection").connection;
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"], 
+          scriptSrc: ["'self'", "'unsafe-inline'",  'https://ajax.googleapis.com', 'https://cdnjs.cloudflare.com', 'https://maxcdn.bootstrapcdn.com'],
+          styleSrc: ["'self'", "'unsafe-inline'", 'https://maxcdn.bootstrapcdn.com'],
+          imgSrc: ["'self'", "'unsafe-inline'", 'http://www.w3.org', 'data:'],
+          connectSrc: ["'self'"],
+          objectSrc: [],
+          mediaSrc: [],
+          frameSrc: ["'self'"],
+        },
+      }
+    })
+  );
 
 app.use(session({
     secret: 'keyboard cat', //will see later
@@ -30,7 +46,6 @@ const usersRouter = require("./routes/users.js");
 const sessionRouter = require("./routes/session.js");
 const ingredientsRouter = require("./routes/ingredients.js");
 const measurementsRouter = require("./routes/measurements.js");
-
 
 app.use(recipesRouter.router);
 app.use(usersRouter.router);
