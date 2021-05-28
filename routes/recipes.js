@@ -308,9 +308,19 @@ router.put("/api/recipes", (req, res) => {
         //chceck if recipe has ingredients:
         let formObjectIngredients = req.body.ingredients;
         let ingredients = [];
-        for (key in formObjectIngredients) {            
-            ingredients.push(formObjectIngredients[key]);
+        for (key in formObjectIngredients) { 
+            let duplicate = 0;
+            ingredients.forEach(i => {
+                if (i.id === formObjectIngredients[key].id) {
+                    i.amount = Number(i.amount) + Number(formObjectIngredients[key].amount);
+                    duplicate = 1;
+                }
+            })
+            if (!duplicate) {
+                ingredients.push(formObjectIngredients[key]);
+            }          
         }
+
         if (ingredients.length !== 0) {
 
             //add new ingredients

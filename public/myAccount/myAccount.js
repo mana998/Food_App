@@ -227,7 +227,6 @@ async function submitForm(e) {
         }
     } else if ($('#modalHeadder').text() === 'Update recipe') {
         let nameCheck = await recipeNameCheck(formData.get('recipe_name'),formData.get('recipe_id'));
-        console.log(nameCheck);
         if (nameCheck === "Not exists") {
             response = await fetch("/api/recipes", {
                 method: 'put',
