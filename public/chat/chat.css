@@ -78,30 +78,33 @@
 }
 
 .left {
-    float: left;
+    margin-right: 100%;
     background-color: #f8f8f8;
 }
 
 .right {
-    float: right;
     background-color: #BA9291;
     margin-left: 100%;
 }
 
 .left.short {
-    margin-right: 100%;
+    margin-right: auto;
+    display: block;
 }
 
 .left.long {
+    float:left;
     width: 75%;
     overflow-wrap: break-word;
 }
 
 .right.short {
-    margin-left: 100%;
+    margin-left: auto;
+    display: block;
 }
 
 .right.long {
+    float: right;
     width: 75%;
     overflow-wrap: break-word;
 }
