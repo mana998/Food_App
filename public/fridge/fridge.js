@@ -27,7 +27,9 @@ async function renderIngredients() {
 $('#ingredients-form').on('submit', findRecipes);
 
 async function findRecipes(e) {
-    e.preventDefault();
+    if (e) {
+        e.preventDefault();
+    }
     let form = document.getElementById('ingredients-form');
     form = new FormData(form);
     let fetchString = '/api/recipes/ingredients?';
@@ -42,6 +44,7 @@ async function findRecipes(e) {
         $('#fridge-recipes-container').empty();
         result.recipes.map(recipe => {
             $('#fridge-recipes-container').append(generateRecipe(recipe, 'fridge-recipes-container'));
+            checkFavorite(recipe.id, 'fridge-recipes-container');
             $(`#update-icon-fridge-recipes-container-${recipe.id}`).css('display','none');
         });  
     }

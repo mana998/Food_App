@@ -223,19 +223,15 @@ router.post('/api/recipes/favorites', (req,res) => {
     const recipe_id = req.body.recipe_id;
     const user_id = req.body.user_id;
     db.query('INSERT INTO favorite VALUES (?,?)', [recipe_id, user_id], (error, result, fields) => {     
-        if (error) {
-            throw error;
+        if (!error && result && result.affectedRows === 1) {
+            res.status(201).send({
+                message: "Like added."
+            });
         } else {
-            if (result.affectedRows === 1) {
-                res.status(201).send({
-                    message: "Like added."
-                });
-            } else {
-                res.status(500).send({
-                    message: "Something went wrong. Try again."
-                });
-            }
-        }      
+            res.status(500).send({
+                message: "Something went wrong. Try again."
+            });
+        }   
     });
 });
 
@@ -344,18 +340,14 @@ router.delete('/api/recipes/favorites', (req,res) => {
     const recipe_id = req.body.recipe_id;
     const user_id = req.body.user_id;
     db.query('DELETE FROM favorite WHERE favorite.recipe_id = ? AND favorite.user_id = ?', [recipe_id, user_id], (error, result, fields) => {
-        if (error) {
-            throw error;
+        if (!error && result && result.affectedRows === 1) {
+            res.status(200).send({
+                message: "Like deleted."
+            });
         } else {
-            if (result.affectedRows === 1) {
-                res.status(200).send({
-                    message: "Like deleted."
-                });
-            } else {
-                res.status(500).send({
-                    message: "Something went wrong. Try again."
-                });
-            }
+            res.status(500).send({
+                message: "Something went wrong. Try again."
+            });
         }      
     });
 })

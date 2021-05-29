@@ -291,7 +291,7 @@ async function addFavorite(recipe_id, user_id, container) {
     const result = await response.json();
     if (result.message === "Like added.") {
         refresh(container);
-    } else {
+    } else if (container !== "fridge-recipes-container") {
         $(`#${recipe_id}`).removeAttr('hidden');
         $(`#${recipe_id}`).text("Sorry, try to add the recipe to your favorites later.");
     }
@@ -310,7 +310,7 @@ async function deleteFavorite(recipe_id, user_id, container) {
     const result = await response.json();
     if (result.message === "Like deleted."){
         refresh(container);
-    } else {
+    } else if (container !== "fridge-recipes-container") {
         $(`#${recipe_id}`).removeAttr('hidden');
         $(`#${recipe_id}`).text("Sorry, try to delete the recipe from your favorites later.");
     }
@@ -325,6 +325,8 @@ function refresh(container) {
         renderMyRecipes("favorite-recipes", "favorite");
     } else if (container === 'flex-container') {
         renderRecipe();
+    } else if (container === "fridge-recipes-container") {
+        findRecipes();
     } else {
         $(`#${container}`).empty();
         renderMyRecipes(container);
