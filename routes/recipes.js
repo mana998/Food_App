@@ -47,7 +47,7 @@ router.get("/api/recipes", (req, res) => {
             }
             res.status(200).send({recipes});
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "No recipes found"
             });
         }
@@ -69,7 +69,7 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
         query = 'SELECT recipe.recipe_id, recipe.recipe_name,recipe.recipe_desc, recipe.recipe_img, recipe.likes FROM recipe INNER JOIN favorite ON recipe.recipe_id = favorite.recipe_id WHERE favorite.user_id = ?;';
         values = [user_id];
     } else {
-        res.status(204).send({
+        res.status(200).send({
             message: "No recipes found"
         });
     }
@@ -84,7 +84,7 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
             }
             res.status(200).send({recipes});
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "No recipes found"
             });
         }
@@ -131,7 +131,7 @@ router.get("/api/recipes/ingredients", (req, res) => {
             }
             res.status(200).send({recipes});
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "No recipes found"
             });
         }
@@ -156,7 +156,7 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
                 ingredients: ingredients
             });
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "This recipe does not exists."
             });
         }

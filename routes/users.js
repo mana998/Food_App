@@ -20,7 +20,7 @@ router.get("/api/users/active", (req, res) => {
             }
             res.status(200).send({users});
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "No users found"
             });
         }

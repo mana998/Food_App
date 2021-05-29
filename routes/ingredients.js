@@ -18,7 +18,7 @@ router.get("/api/ingredients", (req, res) => {
                 ingredients: ingredients
             });
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "There are no ingredients."
             });
         }

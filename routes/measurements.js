@@ -14,7 +14,7 @@ router.get('/api/measurements', (req,res) => {
                 measures: measures
             });
         } else {
-            res.status(204).send({
+            res.status(200).send({
                 message: "There are no measures."
             });
         }
