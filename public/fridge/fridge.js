@@ -37,11 +37,11 @@ async function findRecipes(e) {
     const response = await fetch(fetchString);
     const result = await response.json();
     if (result && result.message) {
-        $('#recipes-container').text(result.message);
+        $('#fridge-recipes-container').text(result.message);
     } else {
-        $('#recipes-container').empty();
+        $('#fridge-recipes-container').empty();
         result.recipes.map(recipe => {
-            $('#recipes-container').append(generateRecipe(recipe, 'recipes-container'));
+            $('#fridge-recipes-container').append(generateRecipe(recipe, 'fridge-recipes-container'));
             $(`#update-icon-fridge-recipes-container-${recipe.id}`).css('display','none');
         });  
     }

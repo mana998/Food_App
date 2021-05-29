@@ -1,7 +1,7 @@
 //function to create recipe container
 function generateRecipe(recipe, container) {
     let imageCol = '';
-    if (container === 'recipes-container') {
+    if (container === 'recipes-container' || container === 'fridge-recipes-container') {
         imageCol = 'col-md-3';
     } else {
         imageCol = 'col-12';
