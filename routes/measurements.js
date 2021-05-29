@@ -10,11 +10,11 @@ router.get('/api/measurements', (req,res) => {
             for (let measure of result){
                 measures.push( {name : measure.measurement_name, id: measure.measurement_id} );
             }      
-            res.send({
+            res.status(200).send({
                 measures: measures
             });
         } else {
-            res.send({
+            res.status(204).send({
                 message: "There are no measures."
             });
         }

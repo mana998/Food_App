@@ -18,9 +18,9 @@ router.get("/api/users/active", (req, res) => {
             for (const user of result) {
                 users.push(new User(user.user_id, user.username));
             }
-            res.send({users});
+            res.status(200).send({users});
         } else {
-            res.send({
+            res.status(204).send({
                 message: "No users found"
             });
         }
@@ -33,17 +33,17 @@ router.post("/api/users/login", (req, res) => {
         if (result && result.length === 1) {
             bcrypt.compare(req.body.password, result[0].password, (error, match) => {
                 if (match) {
-                    res.send({
+                    res.status(200).send({
                         id: result[0].user_id
                     });
                 } else {
-                    res.send({
+                    res.status(401).send({
                         message: "Incorrect username or password. Try again."
                     });
                 }
             })
         } else {
-            res.send({
+            res.status(401).send({
                 message: "Incorrect username or password. Try again."
             });
         }
@@ -54,7 +54,7 @@ router.post("/api/users/login", (req, res) => {
 router.post("/api/users/register", (req, res) => {
     db.query('SELECT * FROM user WHERE username=?;',[req.body.username], (error, result, fields) => {
         if (result && result.length === 1) {
-            res.send({
+            res.status(409).send({
                 message: "User with the same username already exists. Try again."
             });
         } else if (result.length === 0) {
@@ -62,23 +62,23 @@ router.post("/api/users/register", (req, res) => {
                 if (!error) {
                     db.query('INSERT INTO user (username, password) VALUES (?, ?);',[req.body.username, hash], (error, result, fields) => {
                         if (result.affectedRows === 1) {
-                            res.send({
+                            res.status(201).send({
                                 message: "User added."
                             });
                         } else {
-                            res.send({
+                            res.status(500).send({
                                 message: "Something went wrong. Try again."
                             });
                         }
                     });
                 } else {
-                    res.send({
+                    res.status(500).send({
                         message: "Something went wrong. Try again."
                     });
                 }
             });
         } else {
-           res.send({
+           res.status(500).send({
                 message: "Something went wrong. Try again."
             });
         }
@@ -96,11 +96,11 @@ router.patch("/api/users/logout", (req, res) => {
 function updateActive(id, active, res) {
     db.query('UPDATE user SET active=? WHERE user_id=?;',[active, id], (error, result, fields) => {
         if (!result || result.changedRows > 1) {
-            res.send({
+            res.status(500).send({
                 message: "Something went wrong. Try again."
             });
         } else {
-            res.send({
+            res.status(200).send({
                 id: id
             });
         }

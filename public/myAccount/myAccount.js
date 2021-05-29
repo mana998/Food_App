@@ -239,7 +239,7 @@ async function submitForm(e) {
             }
         }
     }
-    if (result.message == "Image uploaded.") {
+    if (result.message === "Success!") {
         $('#your-recipes').empty();
         renderMyRecipes("your-recipes");
         $('#favorite-recipes').empty();

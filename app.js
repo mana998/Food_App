@@ -14,20 +14,20 @@ const io = require('socket.io')(server);
 
 app.use(
     helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"], 
-          scriptSrc: ["'self'", "'unsafe-inline'",  'https://ajax.googleapis.com', 'https://cdnjs.cloudflare.com', 'https://maxcdn.bootstrapcdn.com'],
-          styleSrc: ["'self'", "'unsafe-inline'", 'https://maxcdn.bootstrapcdn.com'],
-          imgSrc: ["'self'", "'unsafe-inline'", 'http://www.w3.org', 'data:'],
-          connectSrc: ["'self'"],
-          objectSrc: [],
-          mediaSrc: [],
-          frameSrc: ["'self'"],
-        },
-      }
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"], 
+                scriptSrc: ["'self'", "'unsafe-inline'",  'https://ajax.googleapis.com', 'https://cdnjs.cloudflare.com', 'https://maxcdn.bootstrapcdn.com'],
+                styleSrc: ["'self'", "'unsafe-inline'", 'https://maxcdn.bootstrapcdn.com'],
+                imgSrc: ["'self'", "'unsafe-inline'", 'http://www.w3.org', 'data:'],
+                connectSrc: ["'self'"],
+                objectSrc: [],
+                mediaSrc: [],
+                frameSrc: ["'self'"],
+            },
+        }
     })
-  );
+);
 
 app.use(session({
     secret: 'keyboard cat', //will see later
@@ -64,27 +64,27 @@ const myAccount = fs.readFileSync(__dirname + '/public/myAccount/myAccount.html'
 const fridge = fs.readFileSync(__dirname + '/public/fridge/fridge.html', 'utf8');
 
 app.get("/recipes", (req, res) => {
-    res.send(header + chat + recipes + footer);
+    res.status(200).send(header + chat + recipes + footer);
 });
 
 app.get("/recipes/:recipe_name", (req, res) => {
-    res.send(header + chat + recipe + footer);
+    res.status(200).send(header + chat + recipe + footer);
 });
 
 app.get("/", (req, res) => {
-    res.send(header + chat + homepage + footer);
+    res.status(200).send(header + chat + homepage + footer);
 });
 
 app.get("/myAccount/:user_id", (req, res) => {
     if (req.params.user_id) {
-        res.send(header + chat + myAccount +footer);
+        res.status(200).send(header + chat + myAccount +footer);
     } else {
-        res.send(header + chat + homepage + footer);
+        res.status(200).send(header + chat + homepage + footer);
     }
 });
 
 app.get("/fridge", (req, res) => {
-    res.send(header + chat + fridge + footer);
+    res.status(200).send(header + chat + fridge + footer);
 });
 
 //store active sockets
@@ -94,7 +94,6 @@ app.get("/fridge", (req, res) => {
 io.on('connection', (socket) => { 
 
     socket.on("client send message", (data) => {
-        //console.log(data);
         //send to everyone but sender
         //will receive depending on passed id
         socket.broadcast.emit(`server send message ${data.to}`, {to: data.to, from: data.from, message: data.message});
@@ -107,31 +106,24 @@ io.on('connection', (socket) => {
 
     socket.on("user connected", (data) => {
         //store user id assigned to socket
-        //console.log("socket id", socket.id);
         //sockets[socket.id] = data.id;
-        //console.log("connect", sockets);
     })
 
     /*socket.on("disconnect", () => {
         disconnect(socket);
-
         io.emit("user list update", {message: "update"});
     })*/
 });
 
 /*async function disconnect(socket) {
-    console.log("disconnect", sockets);
     if (sockets[socket.id]) {
         //let fullURL =  req.protocol + '://' + req.get('host') + req.originalUrl;
         let fetchString = `http://localhost:8080/api/logout/${sockets[socket.id]}`;
-        console.log(fetchString);
         let response = await fetch(fetchString);
         let result = await response.json();
         sockets[socket.id].delete;
-        console.log("disconnect", result);
     }
 }*/
-
 
 server.listen(process.env.PORT || 8080, (error) => {
 

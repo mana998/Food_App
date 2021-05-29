@@ -45,9 +45,9 @@ router.get("/api/recipes", (req, res) => {
             for (const recipe of result) {
                 recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,'', '', recipe.recipe_img, recipe.likes));
             }
-            res.send({recipes});
+            res.status(200).send({recipes});
         } else {
-            res.send({
+            res.status(204).send({
                 message: "No recipes found"
             });
         }
@@ -69,7 +69,7 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
         query = 'SELECT recipe.recipe_id, recipe.recipe_name,recipe.recipe_desc, recipe.recipe_img, recipe.likes FROM recipe INNER JOIN favorite ON recipe.recipe_id = favorite.recipe_id WHERE favorite.user_id = ?;';
         values = [user_id];
     } else {
-        res.send({
+        res.status(204).send({
             message: "No recipes found"
         });
     }
@@ -82,9 +82,9 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
             for (const recipe of result) {
                 recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,recipe.recipe_desc, '', recipe.recipe_img, recipe.likes));
             }
-            res.send({recipes});
+            res.status(200).send({recipes});
         } else {
-            res.send({
+            res.status(204).send({
                 message: "No recipes found"
             });
         }
@@ -129,9 +129,9 @@ router.get("/api/recipes/ingredients", (req, res) => {
             for (const recipe of result) {
                 recipes.push(new Recipe(recipe.recipe_id, recipe.recipe_name,'', '', recipe.recipe_img, recipe.likes));
             }
-            res.send({recipes});
+            res.status(200).send({recipes});
         } else {
-            res.send({
+            res.status(204).send({
                 message: "No recipes found"
             });
         }
@@ -151,12 +151,12 @@ router.get("/api/recipes/:recipe_name", (req, res) => {
                 ingredients.push(new Ingredient(ingredient.ingredient_id, ingredient.ingredient_name, ingredient.measurement_name, ingredient.amount));
             };
             const recipe = new Recipe(result[0].recipe_id, result[0].recipe_name, result[0].recipe_desc, result[0].user_id, result[0].recipe_img, result[0].likes );
-            res.send({
+            res.status(200).send({
                 recipe: recipe,
                 ingredients: ingredients
             });
         } else {
-            res.send({
+            res.status(204).send({
                 message: "This recipe does not exists."
             });
         }
@@ -167,21 +167,17 @@ router.post("/api/recipes", (req, res) => {
     upload(req, res, (err) => {
 
         if (err) {
-            res.send({
+            res.status(400).send({
                 message: "Make sure that your image is .jpg or .jpeg and has max. 5MB size."
             });
             return;
         }else {
             if (req.file === undefined) {
-                res.send({
+                res.status(400).send({
                     message: "No image selected."
                 });
                 return;               
-            } else {
-                res.send({
-                    message: "Image uploaded."
-                });             
-            }  
+            } 
         }
 
         //insert into recipe table
@@ -204,7 +200,7 @@ router.post("/api/recipes", (req, res) => {
                                     throw error;
                                 } else {
                                     if (result.affectedRows === 0) {
-                                        res.send({message: "Something went wrong. Try again."});
+                                        res.status(500).send({message: "Something went wrong. Try again."});
                                         return;
                                     }
                                 } 
@@ -215,7 +211,10 @@ router.post("/api/recipes", (req, res) => {
             }                     
             
         });
-        
+               
+        res.status(201).send({
+            message: "Success!"
+        });  
     });
 })
 
@@ -228,11 +227,11 @@ router.post('/api/recipes/favorites', (req,res) => {
             throw error;
         } else {
             if (result.affectedRows === 1) {
-                res.send({
+                res.status(201).send({
                     message: "Like added."
                 });
             } else {
-                res.send({
+                res.status(500).send({
                     message: "Something went wrong. Try again."
                 });
             }
@@ -244,21 +243,16 @@ router.put("/api/recipes", (req, res) => {
     upload(req, res, (err) => {
         const recipe_img = req.body.recipe_name.toLowerCase().split(" ").join("_");
         if (err) {
-            res.send({
+            res.status(400).send({
                 message: "Make sure that your image is .jpg or .jpeg and has max. 1MB size."   
             });
             return;
         } else {
             if (req.file === undefined) {
-                res.send({
+                res.status(400).send({
                     message: "No image selected."
                 });
                 return;
-            } else {
-                res.send({
-                    message: "Image uploaded."
-                });
-                
             }
         }
         //deletes unused images
@@ -285,7 +279,7 @@ router.put("/api/recipes", (req, res) => {
                 throw error;
             } else {
                 if (result.affectedRows === 0) {
-                    res.send({
+                    res.status(500).send({
                         message: "Something went wrong with updating. Try again."
                     });
                     return;
@@ -298,7 +292,7 @@ router.put("/api/recipes", (req, res) => {
             if (error) {
                 throw error;
             } else if (result.affectedRows === 0) {
-                res.send({
+                res.status(500).send({
                     message: "Something went wrong with updating ingredients. Try again."
                 });
                 return;     
@@ -329,14 +323,19 @@ router.put("/api/recipes", (req, res) => {
                     if (error) {
                         throw error;
                     } else if (result.affectedRows === 0) {
-                        res.send({
+                        res.status(500).send({
                             message: "Something went wrong with updating ingredients. Try again."
                         });
                         return;
                     }    
                 });
             }    
-        }       
+        } 
+
+        res.status(200).send({
+            message: "Success!"
+        });
+             
     });
 })
 
@@ -349,11 +348,11 @@ router.delete('/api/recipes/favorites', (req,res) => {
             throw error;
         } else {
             if (result.affectedRows === 1) {
-                res.send({
+                res.status(200).send({
                     message: "Like deleted."
                 });
             } else {
-                res.send({
+                res.status(500).send({
                     message: "Something went wrong. Try again."
                 });
             }

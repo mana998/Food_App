@@ -14,11 +14,11 @@ router.get("/api/ingredients", (req, res) => {
             for (const ingredient of result){
                 ingredients.push(new Ingredient(ingredient.ingredient_id, ingredient.ingredient_name, ingredient.measurement_name));
             };     
-            res.send({
+            res.status(200).send({
                 ingredients: ingredients
             });
         } else {
-            res.send({
+            res.status(204).send({
                 message: "There are no ingredients."
             });
         }
@@ -34,7 +34,7 @@ router.post('/api/ingredients', parseMulter.none(),(req,res) => {
             for (let ingredient of result){
                 if (ingredient.ingredient_name === req.body.ingredient_name){
                     exists = 1;
-                    res.send({
+                    res.status(409).send({
                         message: "Ingredient already exists."
                     });
                     break;
@@ -46,12 +46,12 @@ router.post('/api/ingredients', parseMulter.none(),(req,res) => {
                         throw error;
                     } else {
                         if (result.affectedRows === 0) {
-                            res.send({
+                            res.status(500).send({
                                 message: "Something went wrong. Try again."
                             });
                             return;
                         } else {
-                            res.send( {message: "Ingredient added."})
+                            res.status(201).send( {message: "Ingredient added."})
                         }
                     } 
                 });
