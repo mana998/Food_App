@@ -46,12 +46,14 @@ const usersRouter = require("./routes/users.js");
 const sessionRouter = require("./routes/session.js");
 const ingredientsRouter = require("./routes/ingredients.js");
 const measurementsRouter = require("./routes/measurements.js");
+const commentsRouter = require("./routes/comments.js");
 
 app.use(recipesRouter.router);
 app.use(usersRouter.router);
 app.use(sessionRouter.router);
 app.use(ingredientsRouter.router);
 app.use(measurementsRouter.router);
+app.use(commentsRouter.router);
 
 
 const header = fs.readFileSync(__dirname + '/public/header/header.html', 'utf8');

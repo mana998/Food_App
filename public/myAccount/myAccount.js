@@ -337,15 +337,10 @@ function refresh(container) {
 //fetch all favorite and check if recipe id is there if yes give heart filled 
 async function checkFavorite(recipe_id, container) {
     const user_id = await getLoginSession();
-    let fetchString = `/api/recipes/user/${user_id}?filter=favorite`;
+    let fetchString = `/api/recipes/user/${user_id}/favorite/${recipe_id}`;
     const response = await fetch(fetchString);
     const result = await response.json();
-    if (result && result.recipes) {
-        const idRecipes = result.recipes.map(recipe => {
-            return recipe.id;
-        });
-        if (idRecipes.includes(recipe_id)) {
-            $(`#heart-icon-${container}-${recipe_id}`).attr('src','./../global/icons/LikedHeart.png');
-        }
+    if (result && result.includes) {
+        $(`#heart-icon-${container}-${recipe_id}`).attr('src','./../global/icons/LikedHeart.png');
     }   
 }

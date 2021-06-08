@@ -91,6 +91,31 @@ router.get("/api/recipes/user/:user_id", (req, res) => {
     });
 })
 
+router.get("/api/recipes/user/:user_id/favorite/:recipe_id", (req, res) => {
+
+    //add filtering
+    let user_id = req.params["user_id"];
+    let recipe_id = req.params["recipe_id"];
+    let query = "";
+    let values= "";
+
+    query = 'SELECT recipe_id, user_id FROM favorite WHERE user_id = ? AND recipe_id = ?;';
+    values = [user_id, recipe_id];
+
+    db.query(query, values, (error, result, fields) => {
+        if (result && result.length) {
+
+            res.status(200).send({
+                includes: true
+            });
+        } else {
+            res.status(200).send({
+                message: "No recipes found"
+            });
+        }
+    });
+})
+
 router.get("/api/recipes/ingredients", (req, res) => {
     let values = [];
     /*`SELECT recipe.recipe_id, recipe_name, recipe_img, likes, ingredient_has_recipe.ingredient_id  FROM recipe 
@@ -137,6 +162,8 @@ router.get("/api/recipes/ingredients", (req, res) => {
         }
     });
 })
+
+
 
 router.get("/api/recipes/:recipe_name", (req, res) => {
 

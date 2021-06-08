@@ -60,6 +60,36 @@
     background-position: center;
 }
 
+.comment:not(:last-child) {
+    border-bottom: 1px solid #ba92912e;
+    margin-bottom: 2em;
+}
+
+.comment {
+    margin-top: 1em;
+}
+
+.comment-user {
+    display: inline-block;
+}
+
+.delete-icon {
+    height: 2em;
+    margin: 0em 1em 0.5rem 1em;
+}
+
+#submit-comment-button {
+    background-color: #BA9291;
+    border: 1px solid #BA9291;
+}
+
+#comment-area {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 7em;
+}
+
 @media only screen and (max-width: 992px) {
     .ingredients-headder {
         padding-top: 5%;
