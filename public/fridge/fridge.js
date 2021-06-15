@@ -2,7 +2,7 @@ function generateIngredient(ingredient) {
     return(
         `<div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <label for="${ingredient.name}">${ingredient.name}</label>
-            <input class="checkbox-style" type="checkbox" onClick="this.value=${ingredient.id}" id="${ingredient.name}" name="${ingredient.name}" value="${ingredient.id}">
+            <input class="checkbox-style" type="checkbox" id="${ingredient.name}" name="${ingredient.name}" value="${ingredient.id}">
         </div`
     );
 }
