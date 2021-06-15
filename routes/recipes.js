@@ -129,7 +129,7 @@ router.get("/api/recipes/ingredients", (req, res) => {
         values = [...req.query.ingredients];
         req.query.ingredients.map((id, index) => {
             if (index !== 0) {
-                query = `(SELECT t${index - 1}.recipe_id, recipe_name, recipe_img, likes FROM ( ${query}`;
+                query = `SELECT t${index - 1}.recipe_id, recipe_name, recipe_img, likes FROM ( ${query}`;
                 /* `INNER JOIN ingredient_has_recipe
                 ON t${index - 1}.recipe_id = ingredient_has_recipe.recipe_id
                 WHERE ingredient_has_recipe.ingredient_id = ?
@@ -198,7 +198,7 @@ router.post("/api/recipes", (req, res) => {
                 message: "Make sure that your image is .jpg or .jpeg and has max. 5MB size."
             });
             return;
-        }else {
+        } else {
             if (req.file === undefined) {
                 res.status(400).send({
                     message: "No image selected."
