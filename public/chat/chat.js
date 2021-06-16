@@ -40,7 +40,7 @@ function toggleChat(id) {
         let userId = openChats.findIndex(element => {
                 return Number(element.id) === Number(id);
         });
-        user = openChats[userId];
+        let user = openChats[userId];
         user.toggle = !user.toggle;
         openChats[userId].toggle = user.toggle;
         toggleChat = user.toggle;
